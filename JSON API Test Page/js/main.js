@@ -14,6 +14,7 @@ function myAPI2() {
 
 //THIS DOES NOT WORK 
 function myFile() {
-    var mydata = JSON.parse(csgobackpack);
-    console.log(mydata);
+    fetch('https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/barebones-testing/JSON%20API%20Test%20Page/json/csgobackpack.json')
+        .then(response => response.json())
+        .then(data => console.log(data));
 }
