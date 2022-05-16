@@ -5,9 +5,15 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    border-radius: 15px;
     border: 1px solid #e7e7e7;
-    background-color: #5a649c;
+    background-color: #1F1B24;
   }
+
+  body {
+    background-color: #121212;
+  }
+
   
 .menuItem{
     font-family:'Roboto', sans-serif;
@@ -38,10 +44,10 @@ ul {
   }
   
   li a:hover:not(.active) {
-    background-color: #414f9d;
+    background-color: #f7f1fd19;
   }
   
   li a.active {
-    color: white;
-    background-color: #04AA6D;
+    color: black;
+    background-color: #e6d9e0;
   }

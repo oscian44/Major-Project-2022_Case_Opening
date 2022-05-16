@@ -4,7 +4,8 @@ var simBarDiv = document.getElementById("menubarSim")
 var loadingDiv = document.getElementById("loading")
 var imgHashdata;
 var itemData;
-var siteActive = 0
+var siteActive = 1
+
 
 
 //Load localstorage from browser
@@ -72,11 +73,7 @@ function loadImgHash(isSiteActive) {
             }
             loadingDiv.style.display = "none"
         });
-
-
-
-
-
-
 }
+
+document.getElementById("inventory").setAttribute("class", "active");
 
