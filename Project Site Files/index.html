@@ -13,13 +13,13 @@
 
     <div id="menubar">
         <ul>
-            <li class="menuTitle">CS:GO Case Simulator</li>
+            <li class="menuTitle"><a onclick="home()" id="home">CS:GO Case Simulator</a></li>
             <div id="menubarSim">
-                <li class="menuItem"><a class="" onclick="" id="inventory" href="#Inventory">Inventory</a></li>
-                <li class="menuItem"><a class="" onclick="" id="endsim" href="#EndSim">End Simulation</a></li>
+                <li class="menuItem"><a class="" onclick="inventory()" id="inventory" >Inventory</a></li>
+                <li class="menuItem"><a class="" onclick="" id="endsim" >End Simulation</a></li>
 
             </div>
-            <li class="menuItem"><a onclick="loadItemData(siteActive)" href="#">Reload Price Data</a></li>
+            <li class="menuItem"><a onclick="loadItemData(siteActive)" >Reload Price Data</a></li>
         </ul>
     </div>
 
@@ -34,9 +34,9 @@
 
     </div>
 
-    <div id="loading">
-        <h1>Pretend a loading gif is here</h1>
-        <img src="" alt="">
+    <div class="loadingScreen" id="loading">
+        <img src="img/loading.gif" alt="">
+        <p class="tooltip">Loading Please Wait</p>
     </div>
 
 

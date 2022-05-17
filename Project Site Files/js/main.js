@@ -11,29 +11,38 @@ var siteActive = 1
 //Load localstorage from browser
 
 
-//Sets page depending on browser stored value
-if(siteActive == 1){
-    homeDiv.style.display = "none"
-    mainDiv.style.display = "Block"
-    simBarDiv.style.display = "Block"
-    loadingDiv.style.display = "none"
-}else{
+
+function showHome() {
     homeDiv.style.display = "Block"
     mainDiv.style.display = "none"
     simBarDiv.style.display = "none"
     loadingDiv.style.display = "none"
-
 }
+
+function showMain() {
+    homeDiv.style.display = "none"
+    mainDiv.style.display = "Block"
+    simBarDiv.style.display = "Block"
+    loadingDiv.style.display = "none"
+}
+
+//Sets page depending on browser stored value
+if (siteActive == 1) {
+    showMain()
+} else {
+    showHome()
+}
+
 
 //Loads gargantuan image hash json on page load 
 window.onload = (event) => {
     loadImgHash(siteActive)
     loadItemData(siteActive)
-  };
+};
 
 //Returns most of what is needed from CSGO Backpack API
 function loadItemData(isSiteActive) {
-    
+
     homeDiv.style.display = "none"
     mainDiv.style.display = "none";
     loadingDiv.style.display = "Block"
@@ -44,12 +53,11 @@ function loadItemData(isSiteActive) {
             console.log(data)
             itemData = data
 
-            if(isSiteActive == 1){
-                mainDiv.style.display = "Block"
-            }else{
-                homeDiv.style.display = "Block"
+            if (isSiteActive == 1) {
+                setTimeout(showMain(), 2000)
+            } else {
+                setTimeout(showHome(), 2000)
             }
-            loadingDiv.style.display = "none"
         });
 }
 
@@ -66,14 +74,19 @@ function loadImgHash(isSiteActive) {
             console.log(data)
             imgHashdata = data
 
-            if(isSiteActive == 1){
-                mainDiv.style.display = "Block"
-            }else{
-                homeDiv.style.display = "Block"
+            if (isSiteActive == 1) {
+                setTimeout(showMain(), 2000)
+            } else {
+                setTimeout(showHome(), 2000)
             }
-            loadingDiv.style.display = "none"
         });
 }
 
-document.getElementById("inventory").setAttribute("class", "active");
+function inventory() {
+    document.getElementById("inventory").setAttribute("class", "active");
 
+}
+
+function home() {
+    document.getElementById("inventory").setAttribute("class", "");
+}

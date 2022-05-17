@@ -26,7 +26,6 @@ ul {
     display: block;
     color: rgb(255, 255, 255);
     text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
 }
 
@@ -45,9 +44,22 @@ ul {
   
   li a:hover:not(.active) {
     background-color: #f7f1fd19;
+    cursor: pointer
   }
   
   li a.active {
     color: black;
     background-color: #e6d9e0;
+  }
+
+  .tooltip{
+    color: #e6d9e0;
+    font-style: italic;
+    font-family:'Roboto', sans-serif;
+    font-weight: 400;
+  }
+  
+  .loadingScreen{
+    text-align: center;
+    margin: auto;
   }
