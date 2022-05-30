@@ -1,65 +1,83 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border-radius: 15px;
-    border: 1px solid #e7e7e7;
-    background-color: #1F1B24;
-  }
-
-  body {
-    background-color: #121212;
-  }
-
-  
-.menuItem{
-    font-family:'Roboto', sans-serif;
-    font-weight: 400;
+  list-style-type: none;
+  margin: 10px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 15px;
+  border: 1px solid #e7e7e7;
+  background-color: #1F1B24;
 }
 
-.menuTitle{
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    display: block;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    text-decoration: none;
+body {
+  background-color: #121212;
 }
 
-  li {
-    float: left;
-    
-  }
-  
-  li a {
-    display: block;
-    color: rgb(211, 211, 211);
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  li a:hover:not(.active) {
-    background-color: #f7f1fd19;
-    cursor: pointer
-  }
-  
-  li a.active {
-    color: black;
-    background-color: #e6d9e0;
-  }
 
-  .tooltip{
-    color: #e6d9e0;
-    font-style: italic;
-    font-family:'Roboto', sans-serif;
-    font-weight: 400;
-  }
-  
-  .loadingScreen{
-    text-align: center;
-    margin: auto;
-  }
+.menuItem {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+.menuTitle {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  display: block;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  text-decoration: none;
+}
+
+li {
+  float: left;
+
+}
+
+li a {
+  display: block;
+  color: rgb(211, 211, 211);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #f7f1fd19;
+  cursor: pointer
+}
+
+li a.active {
+  color: black;
+  background-color: #e6d9e0;
+}
+
+.tooltip {
+  color: #e6d9e0;
+  font-style: italic;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+.loadingScreen {
+  text-align: center;
+  margin: auto;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  background-color: #1F1B24;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(211, 211, 211);
+}
+
+.grid-container > div {
+  background-color: #50465c;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 10px;
+  line-height: 20%;
+}

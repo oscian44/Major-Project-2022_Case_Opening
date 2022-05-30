@@ -2,6 +2,7 @@ var homeDiv = document.getElementById("homesite")
 var mainDiv = document.getElementById("mainsite")
 var simBarDiv = document.getElementById("menubarSim")
 var loadingDiv = document.getElementById("loading")
+var inventoryDiv = document.getElementById("inventory")
 var imgHashdata;
 var itemData;
 var siteActive = 1
@@ -24,6 +25,14 @@ function showMain() {
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
     loadingDiv.style.display = "none"
+}
+
+function showInventory(){
+    homeDiv.style.display = "none"
+    mainDiv.style.display = "Block"
+    simBarDiv.style.display = "Block"
+    loadingDiv.style.display = "none"
+
 }
 
 //Sets page depending on browser stored value
@@ -53,6 +62,7 @@ function loadItemData(isSiteActive) {
             console.log(data)
             itemData = data
 
+            //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
             if (isSiteActive == 1) {
                 setTimeout(showMain(), 2000)
             } else {
@@ -85,8 +95,12 @@ function loadImgHash(isSiteActive) {
 function inventory() {
     document.getElementById("inventory").setAttribute("class", "active");
 
+
+
 }
 
 function home() {
     document.getElementById("inventory").setAttribute("class", "");
+
+
 }
