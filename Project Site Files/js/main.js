@@ -98,17 +98,10 @@ function loadImgHash(isSiteActive) {
 
 function populateCases() {
 
-    const lenObj = (Object.keys(itemData.cases).length) - 1
-    console.log(lenObj)
+    const nameArray = Object.keys(itemData.cases)
+    
 
-    const nameArray = []
-    for (i = 0; i < lenObj; i++) {
-
-        nameArray[i] = Object.keys(itemData.cases)[i]
-
-    }
-
-    console.log(nameArray)
+    console.log(nameArray) 
 
     //console.log(itemData.cases[1])
 
