@@ -12,7 +12,7 @@ var siteActive = 1
 //Load localstorage from browser
 
 
-
+//Functions which affect the active site DIVs
 function showHome() {
     homeDiv.style.display = "Block"
     mainDiv.style.display = "none"
@@ -42,15 +42,42 @@ if (siteActive == 1) {
     showHome()
 }
 
+//Returns JSON object with image hashes
+function loadImgHash(isSiteActive) {
+    return new Promise((resolve, reject) => {
+        //here our function should be implemented 
+        setTimeout(() => {
+            homeDiv.style.display = "none"
+            mainDiv.style.display = "none";
+            loadingDiv.style.display = "Block"
 
-//Loads gargantuan image hash json on page load 
-window.onload = (event) => {
-    loadImgHash(siteActive)
-    loadItemData(siteActive)
-};
+            fetch('https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/json/csgobackpack.json')
+                .then(response => response.json())
+                .then(data => {
 
-//Returns most of what is needed from CSGO Backpack API
-function loadItemData(isSiteActive) {
+                    imgHashdata = data
+                    console.log(imgHashdata)
+
+
+                    if (isSiteActive == 1) {
+                        setTimeout(showMain(), 2000)
+                    } else {
+                        setTimeout(showHome(), 2000)
+                    }
+
+                    console.log("Hello from inside the testAsync function");
+                    resolve();
+
+                });
+        }, 3000
+        );
+    });
+
+
+}
+
+//Returns most of what is needed from a mirror of the CSGO Backpack API
+async function loadItemData(isSiteActive) {
 
     homeDiv.style.display = "none"
     mainDiv.style.display = "none";
@@ -64,47 +91,28 @@ function loadItemData(isSiteActive) {
             console.log(itemData)
 
             //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
-            if (isSiteActive == 1) {
-                setTimeout(showMain(), 2000)
-            } else {
-                setTimeout(showHome(), 2000)
-            }
+            
         });
-}
 
-//Returns JSON object with image hashes
-function loadImgHash(isSiteActive) {
+    await loadImgHash(isSiteActive);
+    if (isSiteActive == 1) {
+        setTimeout(showMain(), 2000)
+        populateCases()
+    } else {
+        setTimeout(showHome(), 2000)
+    }
+    
 
-    homeDiv.style.display = "none"
-    mainDiv.style.display = "none";
-    loadingDiv.style.display = "Block"
-
-    fetch('https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/json/csgobackpack.json')
-        .then(response => response.json())
-        .then(data => {
-
-            imgHashdata = data
-            console.log(imgHashdata)
-
-            if (isSiteActive == 1) {
-                setTimeout(showMain(), 2000)
-            } else {
-                setTimeout(showHome(), 2000)
-            }
-        });
 }
 
 
 
+
+//Populates the grid of cases on the main site page
 function populateCases() {
 
     const nameArray = Object.keys(itemData.cases)
-    
-
-    console.log(nameArray) 
-
-    //console.log(itemData.cases[1])
-
+    console.log(nameArray)
     const lenCase = (nameArray.length) - 1
 
     for (i = 0; i < lenCase; i++) {
@@ -113,15 +121,20 @@ function populateCases() {
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
         <div>
-            <img src="` + imgHash + `" alt="" class="caseImg" id="caseImg` + i + `"> 
+            <img src="` + imgHash + `" alt="" class="caseImg" onclick="openCase(` + nameArray[i] + `)" id="caseImg` + i + `"> 
             
-                <h1 class="caseName" id="caseName`+ i +`">`+ nameArray[i] + `</h1>
-                <h2 class="casePrice">$` +itemData.cases[nameArray[i]]["cost of case"] +`</h2>
+                <h1 class="caseName" id="caseName` + i + `">` + nameArray[i] + `</h1>
+                <h2 class="casePrice">$` + itemData.cases[nameArray[i]]["cost of case"] + `</h2>
 
         </div>
         `);
 
     }
+
+}
+
+function refreshSite() {
+    loadItemData(siteActive)
 
 }
 
@@ -138,3 +151,8 @@ function home() {
 
 
 }
+
+//Loads objects and cases on page load
+window.onload = (event) => {
+    refreshSite()
+};
