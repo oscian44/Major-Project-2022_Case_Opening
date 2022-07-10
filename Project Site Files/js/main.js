@@ -27,7 +27,7 @@ function showMain() {
     loadingDiv.style.display = "none"
 }
 
-function showInventory(){
+function showInventory() {
     homeDiv.style.display = "none"
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
@@ -59,8 +59,9 @@ function loadItemData(isSiteActive) {
     fetch('https://raw.githubusercontent.com/jonese1234/Csgo-Case-Data/master/latest.json')
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+
             itemData = data
+            console.log(itemData)
 
             //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
             if (isSiteActive == 1) {
@@ -81,8 +82,9 @@ function loadImgHash(isSiteActive) {
     fetch('https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/json/csgobackpack.json')
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+
             imgHashdata = data
+            console.log(imgHashdata)
 
             if (isSiteActive == 1) {
                 setTimeout(showMain(), 2000)
@@ -92,8 +94,47 @@ function loadImgHash(isSiteActive) {
         });
 }
 
+
+
+function populateCases() {
+
+    const lenObj = (Object.keys(itemData.cases).length) - 1
+    console.log(lenObj)
+
+    const nameArray = []
+    for (i = 0; i < lenObj; i++) {
+
+        nameArray[i] = Object.keys(itemData.cases)[i]
+
+    }
+
+    console.log(nameArray)
+
+    //console.log(itemData.cases[1])
+
+    const lenCase = (nameArray.length) - 1
+
+    for (i = 0; i < lenCase; i++) {
+
+        const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[i]].icon_url
+
+        document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
+        <div>
+            <img src="` + imgHash + `" alt="" class="caseImg" id="caseImg` + i + `"> 
+            
+                <h1 class="caseName" id="caseName`+ i +`">`+ nameArray[i] + `</h1>
+                <h2 class="casePrice">$` +itemData.cases[nameArray[i]]["cost of case"] +`</h2>
+
+        </div>
+        `);
+
+    }
+
+}
+
 function inventory() {
     document.getElementById("inventory").setAttribute("class", "active");
+
 
 
 

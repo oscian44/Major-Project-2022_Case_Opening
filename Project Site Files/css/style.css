@@ -79,5 +79,11 @@ li a.active {
   text-align: center;
   padding: 10px 0;
   font-size: 10px;
-  line-height: 20%;
+  line-height: 1.4;
+  
+}
+
+br {
+  display: block;
+  margin: 5px 0;
 }
