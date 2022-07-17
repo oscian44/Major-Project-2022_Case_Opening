@@ -6,7 +6,11 @@ var inventoryDiv = document.getElementById("inventory")
 var imgHashdata;
 var itemData;
 var siteActive = 1
-
+var inventoryData = []
+var totalSpend;
+var totalSold;
+var totalProfit;
+var inventoryValue;
 
 
 //Load localstorage from browser
@@ -45,7 +49,6 @@ if (siteActive == 1) {
 //Returns JSON object with image hashes
 function loadImgHash(isSiteActive) {
     return new Promise((resolve, reject) => {
-        //here our function should be implemented 
         setTimeout(() => {
             homeDiv.style.display = "none"
             mainDiv.style.display = "none";
@@ -64,13 +67,10 @@ function loadImgHash(isSiteActive) {
                     } else {
                         setTimeout(showHome(), 2000)
                     }
-
-                    console.log("Hello from inside the testAsync function");
                     resolve();
 
                 });
-        }, 3000
-        );
+        }, 3000);
     });
 
 
@@ -90,10 +90,8 @@ async function loadItemData(isSiteActive) {
             itemData = data
             console.log(itemData)
 
-            //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
-            
         });
-
+    //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
     await loadImgHash(isSiteActive);
     if (isSiteActive == 1) {
         setTimeout(showMain(), 2000)
@@ -101,7 +99,7 @@ async function loadItemData(isSiteActive) {
     } else {
         setTimeout(showHome(), 2000)
     }
-    
+
 
 }
 
@@ -114,6 +112,10 @@ function populateCases() {
     const nameArray = Object.keys(itemData.cases)
     console.log(nameArray)
     const lenCase = (nameArray.length) - 1
+
+    //Resets Case Grid
+    document.getElementById("caseGrid").innerHTML = "";
+
 
     for (i = 0; i < lenCase; i++) {
 
