@@ -122,7 +122,7 @@ function populateCases() {
         const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[i]].icon_url
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
-        <div>
+        <div id=case"` + i + `">
             <img src="` + imgHash + `" alt="" class="caseImg" onclick="openCase(` + nameArray[i] + `)" id="caseImg` + i + `"> 
             
                 <h1 class="caseName" id="caseName` + i + `">` + nameArray[i] + `</h1>
@@ -138,6 +138,10 @@ function populateCases() {
 function refreshSite() {
     loadItemData(siteActive)
 
+}
+
+function searchCase(){
+    
 }
 
 function inventory() {

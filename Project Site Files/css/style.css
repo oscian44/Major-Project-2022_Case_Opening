@@ -87,3 +87,22 @@ br {
   display: block;
   margin: 5px 0;
 }
+
+.searchBar{
+  text-align: center;
+  padding: 10px;
+}
+input {
+  width: 30%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color: #50465c;
+  color: white;
+  border-radius: 4px;
+}
+
+button{
+  padding: 10px 20px;
+  margin: 8px 0;
+}
