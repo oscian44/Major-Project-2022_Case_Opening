@@ -11,6 +11,7 @@ var totalSpend;
 var totalSold;
 var totalProfit;
 var inventoryValue;
+var dataLoaded = 0;
 
 
 //Load localstorage from browser
@@ -29,6 +30,20 @@ function showMain() {
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
     loadingDiv.style.display = "none"
+    if (dataLoaded == 1){
+        showCases()
+    }
+    
+}
+
+function showSearchResult(result){
+    homeDiv.style.display = "none"
+    mainDiv.style.display = "Block"
+    simBarDiv.style.display = "Block"
+    loadingDiv.style.display = "none"
+    hideCases()
+    const caseId = "case" + result
+    document.getElementById(caseId).style.display = "Block"
 }
 
 function showInventory() {
@@ -93,6 +108,7 @@ async function loadItemData(isSiteActive) {
         });
     //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
     await loadImgHash(isSiteActive);
+    
     if (isSiteActive == 1) {
         setTimeout(showMain(), 2000)
         populateCases()
@@ -122,7 +138,7 @@ function populateCases() {
         const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[i]].icon_url
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
-        <div id=case"` + i + `">
+        <div id="case` + i + `">
             <img src="` + imgHash + `" alt="" class="caseImg" onclick="openCase(` + nameArray[i] + `)" id="caseImg` + i + `"> 
             
                 <h1 class="caseName" id="caseName` + i + `">` + nameArray[i] + `</h1>
@@ -133,6 +149,30 @@ function populateCases() {
 
     }
 
+    dataLoaded = 1
+
+}
+
+function hideCases(){
+    const nameArray = Object.keys(itemData.cases)
+    const lenCase = (nameArray.length) - 1
+
+    for (i=0; i<lenCase; i++){
+        const id = "case" + i
+        document.getElementById(id).style.display = "none"
+    }
+    
+}
+
+function showCases(){
+    const nameArray = Object.keys(itemData.cases)
+    const lenCase = (nameArray.length) - 1
+
+    for (i=0; i<lenCase; i++){
+        const id = "case" + i
+        document.getElementById(id).style.display = "Block"
+    }
+    
 }
 
 function refreshSite() {
@@ -140,9 +180,84 @@ function refreshSite() {
 
 }
 
-function searchCase(){
+//Converts term to lowercase
+function simpTerm(){
+    const input = document.getElementById("searchBar")
+    const simpTerm = input.toLowerCase()
+    return simpTerm;
     
 }
+
+//Sorts item name array
+function sortItems(array) {
+
+    function compare(a, b) {
+        const thingA = a.toUpperCase();
+        const thingB = b.toUpperCase();
+
+        let comparison = 0;
+        if (thingA > thingB) {
+            comparison = 1;
+        } else if (thingA < thingB) {
+            comparison = -1;
+        }
+        return comparison;
+    }
+    return array.sort(compare);
+
+}
+
+var binarySearch = function (items, value) {
+    var startIndex = 0,
+        stopIndex = items.length - 1,
+        middle = Math.floor((stopIndex + startIndex) / 2);
+
+    while (items[middle].name != value && startIndex < stopIndex) {
+
+        //adjust search area
+        if (value < items[middle].name) {
+            stopIndex = middle - 1;
+        } else if (value > items[middle].name) {
+            startIndex = middle + 1;
+        }
+
+        //recalculate middle
+        middle = Math.floor((stopIndex + startIndex) / 2);
+    }
+
+    //make sure it's the right value
+    return (items[middle].name != value) ? -1 : middle;
+}
+
+function linearSearch(arr, key){
+    for(let i = 0; i < arr.length; i++){
+        if(arr[i] === key){
+            return i
+        }
+    }
+    return -1
+}
+
+//Binary Searches a sorted array of the case names to determine
+function searchCase(){
+    const term = simpTerm()
+    const nameArray = Object.keys(itemData.cases)
+    const sortedArray = sortItems(nameArray)
+    const searchResult = binarySearch(sortedArray, term)
+    
+
+    if (searchResult == "-1"){
+        alert("Search term not found. Please type the exact name of a case.")
+
+    }else{
+        const location = linearSearch(nameArray, sortedArray[searchResult])
+        showSearchResult(location)
+    }
+
+}
+
+
+
 
 function inventory() {
     document.getElementById("inventory").setAttribute("class", "active");
