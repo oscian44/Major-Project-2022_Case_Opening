@@ -11,7 +11,7 @@ var totalSpend;
 var totalSold;
 var totalProfit;
 var inventoryValue;
-var dataLoaded = 0;
+var dataLoaded;
 
 
 //Load localstorage from browser
@@ -30,10 +30,6 @@ function showMain() {
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
     loadingDiv.style.display = "none"
-    if (dataLoaded == 1){
-        showCases()
-    }
-    
 }
 
 function showSearchResult(result){
@@ -149,7 +145,9 @@ function populateCases() {
 
     }
 
-    dataLoaded = 1
+    showCases()
+
+    
 
 }
 
@@ -177,12 +175,13 @@ function showCases(){
 
 function refreshSite() {
     loadItemData(siteActive)
+    dataLoaded = 1
 
 }
 
 //Converts term to lowercase
 function simpTerm(){
-    const input = document.getElementById("searchBar")
+    const input = document.getElementById("searchBar").value
     const simpTerm = input.toLowerCase()
     return simpTerm;
     
@@ -211,22 +210,25 @@ var binarySearch = function (items, value) {
     var startIndex = 0,
         stopIndex = items.length - 1,
         middle = Math.floor((stopIndex + startIndex) / 2);
+        item = items[middle].toLowerCase()
 
-    while (items[middle].name != value && startIndex < stopIndex) {
+    while (item != value && startIndex < stopIndex) {
 
         //adjust search area
-        if (value < items[middle].name) {
+        if (value < item) {
             stopIndex = middle - 1;
-        } else if (value > items[middle].name) {
+        } else if (value > item) {
             startIndex = middle + 1;
         }
 
         //recalculate middle
         middle = Math.floor((stopIndex + startIndex) / 2);
+        item = items[middle].toLowerCase()
     }
 
     //make sure it's the right value
-    return (items[middle].name != value) ? -1 : middle;
+    item = items[middle].toLowerCase()
+    return (item != value) ? -1 : middle;
 }
 
 function linearSearch(arr, key){
@@ -276,4 +278,5 @@ function home() {
 //Loads objects and cases on page load
 window.onload = (event) => {
     refreshSite()
+    
 };
