@@ -105,4 +105,11 @@ input {
 button{
   padding: 10px 20px;
   margin: 8px 0;
+  color: black;
+  font-family: 'Roboto', sans-serif;
+}
+
+.balance{
+  float: right;
+  cursor: none;
 }

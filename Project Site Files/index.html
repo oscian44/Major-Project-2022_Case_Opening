@@ -17,9 +17,15 @@
             <div id="menubarSim">
                 <li class="menuItem"><a class="" onclick="inventory()" id="inventory">Inventory</a></li>
                 <li class="menuItem"><a class="" onclick="populateCases()" id="endsim">End Simulation</a></li>
+                
 
             </div>
             <li class="menuItem"><a onclick="refreshSite()">Reload Price Data</a></li>
+
+            <div id="menubarSim" class="balance">
+                <li class="menuItem"><a class="" id="balance">$</a></li>
+                <li class="menuItem"><a class="" id="balance">1000</a></li>
+            </div>
         </ul>
     </div>
 
@@ -38,7 +44,7 @@
                 <input  type="text" id="searchBar" placeholder="Enter Case Name Here">
                 <button onclick="searchCase()">🔍</button>
                 <br>
-                <button onclick="showMain()">Reset</button>
+                <button onclick="showCases()">Reset</button>
             </div>
 
             <div id="caseGrid" class="grid-container">

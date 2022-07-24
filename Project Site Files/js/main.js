@@ -12,6 +12,7 @@ var totalSold;
 var totalProfit;
 var inventoryValue;
 var dataLoaded;
+var nameArray;
 
 
 //Load localstorage from browser
@@ -32,7 +33,7 @@ function showMain() {
     loadingDiv.style.display = "none"
 }
 
-function showSearchResult(result){
+function showSearchResult(result) {
     homeDiv.style.display = "none"
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
@@ -104,13 +105,17 @@ async function loadItemData(isSiteActive) {
         });
     //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
     await loadImgHash(isSiteActive);
-    
+
+    nameArray = Object.keys(itemData.cases)
+
     if (isSiteActive == 1) {
         setTimeout(showMain(), 2000)
         populateCases()
     } else {
         setTimeout(showHome(), 2000)
     }
+
+
 
 
 }
@@ -121,9 +126,9 @@ async function loadItemData(isSiteActive) {
 //Populates the grid of cases on the main site page
 function populateCases() {
 
-    const nameArray = Object.keys(itemData.cases)
+
     console.log(nameArray)
-    const lenCase = (nameArray.length) - 1
+    const lenCase = (nameArray.length) - 2
 
     //Resets Case Grid
     document.getElementById("caseGrid").innerHTML = "";
@@ -135,7 +140,7 @@ function populateCases() {
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
         <div id="case` + i + `">
-            <img src="` + imgHash + `" alt="" class="caseImg" onclick="openCase(` + nameArray[i] + `)" id="caseImg` + i + `"> 
+            <img src="` + imgHash + `" alt="" class="caseImg" onclick="openCase('` + nameArray[i] + `')" id="caseImg` + i + `"> 
             
                 <h1 class="caseName" id="caseName` + i + `">` + nameArray[i] + `</h1>
                 <h2 class="casePrice">$` + itemData.cases[nameArray[i]]["cost of case"] + `</h2>
@@ -147,30 +152,30 @@ function populateCases() {
 
     showCases()
 
-    
+
 
 }
 
-function hideCases(){
-    const nameArray = Object.keys(itemData.cases)
-    const lenCase = (nameArray.length) - 1
+function hideCases() {
 
-    for (i=0; i<lenCase; i++){
+    const lenCase = (nameArray.length) - 2
+
+    for (i = 0; i < lenCase; i++) {
         const id = "case" + i
         document.getElementById(id).style.display = "none"
     }
-    
+
 }
 
-function showCases(){
-    const nameArray = Object.keys(itemData.cases)
-    const lenCase = (nameArray.length) - 1
+function showCases() {
 
-    for (i=0; i<lenCase; i++){
+    const lenCase = (nameArray.length) - 2
+
+    for (i = 0; i < lenCase; i++) {
         const id = "case" + i
         document.getElementById(id).style.display = "Block"
     }
-    
+
 }
 
 function refreshSite() {
@@ -180,11 +185,11 @@ function refreshSite() {
 }
 
 //Converts term to lowercase
-function simpTerm(){
+function simpTerm() {
     const input = document.getElementById("searchBar").value
     const simpTerm = input.toLowerCase()
     return simpTerm;
-    
+
 }
 
 //Sorts item name array
@@ -202,15 +207,16 @@ function sortItems(array) {
         }
         return comparison;
     }
-    return array.sort(compare);
+    return array.slice(0).sort(compare);
 
 }
 
+//Binary Search
 var binarySearch = function (items, value) {
     var startIndex = 0,
         stopIndex = items.length - 1,
         middle = Math.floor((stopIndex + startIndex) / 2);
-        item = items[middle].toLowerCase()
+    item = items[middle].toLowerCase()
 
     while (item != value && startIndex < stopIndex) {
 
@@ -231,29 +237,32 @@ var binarySearch = function (items, value) {
     return (item != value) ? -1 : middle;
 }
 
-function linearSearch(arr, key){
-    for(let i = 0; i < arr.length; i++){
-        if(arr[i] === key){
-            return i
-        }
+//Linear Search
+function linearSearch(arr, target) {
+    for (let i in arr) {
+        if (arr[i] === target) return i
     }
     return -1
 }
 
 //Binary Searches a sorted array of the case names to determine
-function searchCase(){
+function searchCase() {
     const term = simpTerm()
-    const nameArray = Object.keys(itemData.cases)
-    const sortedArray = sortItems(nameArray)
+    let dupeArray = nameArray
+    let sortedArray = sortItems(dupeArray)
     const searchResult = binarySearch(sortedArray, term)
-    
 
-    if (searchResult == "-1"){
+
+    if (searchResult == "-1") {
         alert("Search term not found. Please type the exact name of a case.")
 
-    }else{
+    } else {
         const location = linearSearch(nameArray, sortedArray[searchResult])
-        showSearchResult(location)
+        if (location == "-1") {
+            alert("Search term not found. Please type the exact name of a case.")
+        } else {
+            showSearchResult(location)
+        }
     }
 
 }
@@ -278,5 +287,6 @@ function home() {
 //Loads objects and cases on page load
 window.onload = (event) => {
     refreshSite()
-    
+
+
 };
