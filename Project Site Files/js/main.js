@@ -1,22 +1,23 @@
 var homeDiv = document.getElementById("homesite")
 var mainDiv = document.getElementById("mainsite")
 var simBarDiv = document.getElementById("menubarSim")
+var balanceDiv = document.getElementById("balance")
 var loadingDiv = document.getElementById("loading")
 var inventoryDiv = document.getElementById("inventory")
 var imgHashdata;
 var itemData;
-var siteActive = 1
-var inventoryData = []
-var totalSpend;
-var totalSold;
-var totalProfit;
-var inventoryValue;
 var dataLoaded;
 var nameArray;
 
 
 //Load localstorage from browser
-
+var siteActive = 0;
+var inventoryData = [];
+var totalSpend;
+var totalSold;
+var totalProfit;
+var inventoryValue;
+var balance;
 
 //Functions which affect the active site DIVs
 function showHome() {
@@ -24,12 +25,14 @@ function showHome() {
     mainDiv.style.display = "none"
     simBarDiv.style.display = "none"
     loadingDiv.style.display = "none"
+    balanceDiv.style.display = "none"
 }
 
 function showMain() {
     homeDiv.style.display = "none"
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
+    balanceDiv.style.display = "Block"
     loadingDiv.style.display = "none"
 }
 
@@ -37,6 +40,7 @@ function showSearchResult(result) {
     homeDiv.style.display = "none"
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
+    balanceDiv.style.display = "Block"
     loadingDiv.style.display = "none"
     hideCases()
     const caseId = "case" + result

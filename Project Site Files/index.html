@@ -14,15 +14,14 @@
     <div id="menubar">
         <ul>
             <li class="menuTitle"><a onclick="home()" id="home">CS:GO Case Simulator</a></li>
-            <div id="menubarSim">
+            <div id="menubarSim" class="menubarSim">
                 <li class="menuItem"><a class="" onclick="inventory()" id="inventory">Inventory</a></li>
                 <li class="menuItem"><a class="" onclick="populateCases()" id="endsim">End Simulation</a></li>
-                
-
+                <li class="menuItem"><a onclick="refreshSite()">Reload Price Data</a></li>
             </div>
-            <li class="menuItem"><a onclick="refreshSite()">Reload Price Data</a></li>
 
-            <div id="menubarSim" class="balance">
+
+            <div id="balance" class="menubarSim">
                 <li class="menuItem"><a class="" id="balance">$</a></li>
                 <li class="menuItem"><a class="" id="balance">1000</a></li>
             </div>
@@ -31,6 +30,44 @@
 
     <div id="homesite">
 
+        <div id="infoGrid" class="grid-container1">
+            <div>
+                <h1>Welcome to CS:GO Case Simulator</h1>
+                <br>
+                <h3>Please select a starting balance from the options below to begin the simulation.</h3>
+            </div>
+        </div>
+        <br>
+        <div id="balanceGrid" class="grid-container">
+
+            <div id="bal1">
+                    <p>
+                        <img src="img/Bal1.svg" class="balIMG" alt="">
+                        <h1 class="balText">
+                            $100
+                        </h1>
+                    </p>
+            </div>
+
+            <div id="bal2">
+                <p>
+                    <img src="img/Bal2.svg" class="balIMG" alt="">
+                    <h1 class="balText">
+                        $500
+                    </h1>
+                </p>
+            </div>
+
+            <div id="bal3">
+                <p>
+                    <img src="img/Bal3.svg" class="balIMG" alt="">
+                    <h1 class="balText">
+                        $1000
+                    </h1>
+                </p>
+            </div>
+
+        </div>
     </div>
 
     <div id="mainsite">
@@ -41,7 +78,7 @@
 
         <div id="casePage">
             <div class="searchBar" id="searchBarDiv">
-                <input  type="text" id="searchBar" placeholder="Enter Case Name Here">
+                <input type="text" id="searchBar" placeholder="Enter Case Name Here">
                 <button onclick="searchCase()">🔍</button>
                 <br>
                 <button onclick="showCases()">Reset</button>

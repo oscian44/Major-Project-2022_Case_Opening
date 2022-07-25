@@ -74,6 +74,17 @@ li a.active {
   color: rgb(211, 211, 211);
 }
 
+.grid-container1 {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 10px;
+  background-color: #1F1B24;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(211, 211, 211);
+  text-align: center;
+}
+
 .grid-container > div {
   background-color: #50465c;
   text-align: center;
@@ -109,7 +120,14 @@ button{
   font-family: 'Roboto', sans-serif;
 }
 
-.balance{
+#balance{
   float: right;
-  cursor: none;
+}
+
+.balIMG{
+  height: auto;
+  width: 240px;
+}
+.balText{
+  font-size: 30px;
 }
