@@ -11,13 +11,17 @@ var nameArray;
 
 
 //Load localstorage from browser
-var siteActive = 0;
-var inventoryData = [];
-var totalSpend;
-var totalSold;
-var totalProfit;
-var inventoryValue;
-var balance;
+var siteActive = localStorage.getItem("siteActive")
+var inventoryData = JSON.parse(localStorage.getItem("inventoryDat"));
+var totalSpend = localStorage.getItem("totalSpend")
+var totalSold = localStorage.getItem("totalSold")
+var totalProfit = localStorage.getItem("totalProfit")
+var inventoryValue = localStorage.getItem("invetoryValue")
+var balance = localStorage.getItem("balance")
+
+if (siteActive == null) {
+    siteActive = 0
+}
 
 //Functions which affect the active site DIVs
 function showHome() {
@@ -34,6 +38,7 @@ function showMain() {
     simBarDiv.style.display = "Block"
     balanceDiv.style.display = "Block"
     loadingDiv.style.display = "none"
+    document.getElementById("balanceVal").innerHTML = balance
 }
 
 function showSearchResult(result) {
@@ -56,11 +61,14 @@ function showInventory() {
 }
 
 //Sets page depending on browser stored value
-if (siteActive == 1) {
-    showMain()
-} else {
-    showHome()
+function initPage() {
+    if (siteActive == 1) {
+        showMain()
+    } else {
+        showHome()
+    }
 }
+
 
 //Returns JSON object with image hashes
 function loadImgHash(isSiteActive) {
@@ -271,26 +279,39 @@ function searchCase() {
 
 }
 
+function home() {
+    document.getElementById("inventory").setAttribute("class", "");
+    initPage()
 
-
+}
 
 function inventory() {
     document.getElementById("inventory").setAttribute("class", "active");
-
+    showInventory()
 
 
 
 }
 
-function home() {
-    document.getElementById("inventory").setAttribute("class", "");
+function openCase(caseString){
+    
+}
 
-
+function setBal(bal,a){
+    if (a == 1){
+        siteActive = 1
+        localStorage.setItem("siteActive", siteActive)
+        initPage()
+        refreshSite()
+    }
+    balance = bal
+    localStorage.setItem("balance", balance)
+    document.getElementById("balanceVal").innerHTML = balance
+    console.log("balance is: " + balance)
 }
 
 //Loads objects and cases on page load
 window.onload = (event) => {
+    initPage()
     refreshSite()
-
-
 };

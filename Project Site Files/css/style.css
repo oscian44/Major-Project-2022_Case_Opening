@@ -85,6 +85,51 @@ li a.active {
   text-align: center;
 }
 
+.grid-container2 {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  background-color: #1F1B24;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(211, 211, 211);
+  text-align: center;
+}
+
+.grid-container3 {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 10px;
+  background-color: #1F1B24;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(211, 211, 211);
+  text-align: center;
+}
+
+.grid-container3 > div {
+  background-color: #50465c;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 10px;
+  line-height: 1.4;
+  
+}
+
+.grid-container2 > div {
+  background-color: #50465c;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 10px;
+  line-height: 1.4;
+  
+}
+
+.grid-container2 > div:hover {
+  background-color: rgb(115, 101, 133);
+  cursor: pointer;
+}
+
 .grid-container > div {
   background-color: #50465c;
   text-align: center;
@@ -92,6 +137,16 @@ li a.active {
   font-size: 10px;
   line-height: 1.4;
   
+}
+
+.grid-container > div:hover {
+  background-color: rgb(115, 101, 133);
+  cursor: pointer;
+  
+}
+
+.grid-container > div:hover > .caseImg{
+  animation: short-shake 0.4s infinite;
 }
 
 br {
@@ -120,7 +175,7 @@ button{
   font-family: 'Roboto', sans-serif;
 }
 
-#balance{
+.balance{
   float: right;
 }
 
@@ -130,4 +185,24 @@ button{
 }
 .balText{
   font-size: 30px;
+}
+
+.caseImg{
+
+}
+
+@keyframes long-shake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(5px, 5px) rotate(5deg); }
+  50% { transform: translate(0, 0) rotate(0eg); }
+  75% { transform: translate(-5px, 5px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes short-shake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(2px, 2px) rotate(2deg); }
+  50% { transform: translate(0, 0) rotate(0eg); }
+  75% { transform: translate(-2px, 2px) rotate(-2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
 }

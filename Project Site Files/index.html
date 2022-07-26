@@ -21,9 +21,9 @@
             </div>
 
 
-            <div id="balance" class="menubarSim">
-                <li class="menuItem"><a class="" id="balance">$</a></li>
-                <li class="menuItem"><a class="" id="balance">1000</a></li>
+            <div id="balance" class="menubarSim balance">
+                <li class="menuItem"><a class="balance" id="balance$">$</a></li>
+                <li class="menuItem"><a class="balance" id="balanceVal"></a></li>
             </div>
         </ul>
     </div>
@@ -38,9 +38,9 @@
             </div>
         </div>
         <br>
-        <div id="balanceGrid" class="grid-container">
+        <div id="balanceGrid" class="grid-container2">
 
-            <div id="bal1">
+            <div id="bal1" onclick="setBal('100',1)">
                     <p>
                         <img src="img/Bal1.svg" class="balIMG" alt="">
                         <h1 class="balText">
@@ -49,7 +49,7 @@
                     </p>
             </div>
 
-            <div id="bal2">
+            <div id="bal2" onclick="setBal('500',1)">
                 <p>
                     <img src="img/Bal2.svg" class="balIMG" alt="">
                     <h1 class="balText">
@@ -58,7 +58,7 @@
                 </p>
             </div>
 
-            <div id="bal3">
+            <div id="bal3" onclick="setBal('1000',1)">
                 <p>
                     <img src="img/Bal3.svg" class="balIMG" alt="">
                     <h1 class="balText">
@@ -96,7 +96,13 @@
             </div>
 
             <div id="openCase">
+                <div id="caseDiv" class="grid-container3">
 
+                    <div>
+                        <img src="" alt="" class="caseImg">
+                    </div>
+
+                </div>
             </div>
         </div>
 
