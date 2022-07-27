@@ -41,17 +41,17 @@
         <div id="balanceGrid" class="grid-container2">
 
             <div id="bal1" onclick="setBal('100',1)">
-                    <p>
-                        <img src="img/Bal1.svg" class="balIMG" alt="">
-                        <h1 class="balText">
-                            $100
-                        </h1>
-                    </p>
+                <p>
+                    <img src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/Bal1.svg" class="balIMG" alt="">
+                    <h1 class="balText">
+                        $100
+                    </h1>
+                </p>
             </div>
 
             <div id="bal2" onclick="setBal('500',1)">
                 <p>
-                    <img src="img/Bal2.svg" class="balIMG" alt="">
+                    <img src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/Bal2.svg" class="balIMG" alt="">
                     <h1 class="balText">
                         $500
                     </h1>
@@ -60,7 +60,7 @@
 
             <div id="bal3" onclick="setBal('1000',1)">
                 <p>
-                    <img src="img/Bal3.svg" class="balIMG" alt="">
+                    <img src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/Bal3.svg" class="balIMG" alt="">
                     <h1 class="balText">
                         $1000
                     </h1>
@@ -84,25 +84,35 @@
                 <button onclick="showCases()">Reset</button>
             </div>
 
-            <div id="caseGrid" class="grid-container">
-                <div>
-                    <img src="img/loading.gif" alt="" class="caseImg" id="caseImg1">
-                    <p>
-                        <h1 class="caseName" id="caseName1">Test Case</h1>
-                        <br>
-                        <h2 class="casePrice">$2.50</h2>
-                    </p>
+            <div id="gridDiv">
+                <div id="caseGrid" class="grid-container">
+                    <div>
+                        <img src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/loading.gif" alt="" class="caseImg" id="caseImg1">
+                        <p>
+                            <h1 class="caseName" id="caseName1">Test Case</h1>
+                            <br>
+                            <h2 class="casePrice">$2.50</h2>
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <div id="openCase">
-                <div id="caseDiv" class="grid-container3">
+        </div>
 
+        <div id="openPage">
+            <div class="grid-container3">
+
+                <div class="grid-container4">
                     <div>
-                        <img src="" alt="" class="caseImg">
+                        <input id="exitButton" onclick="closeCase()" type="image" src="img/exit_icon.svg">
                     </div>
-
+                    
+                    <div id="openCaseImgDiv">
+                        <img src="" alt="" id="openCaseImg" class="openCaseImg">
+                    </div>
                 </div>
+                
+
             </div>
         </div>
 
@@ -110,7 +120,7 @@
     </div>
 
     <div class="loadingScreen" id="loading">
-        <img src="img/loading.gif" alt="">
+        <img src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/loading.gif" alt="">
         <p class="tooltip">Loading Please Wait</p>
     </div>
 

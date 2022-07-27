@@ -2,6 +2,8 @@ var homeDiv = document.getElementById("homesite")
 var mainDiv = document.getElementById("mainsite")
 var simBarDiv = document.getElementById("menubarSim")
 var balanceDiv = document.getElementById("balance")
+var openDiv = document.getElementById("openPage")
+var gridDiv = document.getElementById("gridDiv")
 var loadingDiv = document.getElementById("loading")
 var inventoryDiv = document.getElementById("inventory")
 var imgHashdata;
@@ -26,10 +28,12 @@ if (siteActive == null) {
 //Functions which affect the active site DIVs
 function showHome() {
     homeDiv.style.display = "Block"
+    openDiv.style.display = "none"
     mainDiv.style.display = "none"
     simBarDiv.style.display = "none"
     loadingDiv.style.display = "none"
     balanceDiv.style.display = "none"
+    gridDiv.style.display = "none"
 }
 
 function showMain() {
@@ -37,6 +41,8 @@ function showMain() {
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
     balanceDiv.style.display = "Block"
+    openDiv.style.display = "none"
+    gridDiv.style.display = "Block"
     loadingDiv.style.display = "none"
     document.getElementById("balanceVal").innerHTML = balance
 }
@@ -47,8 +53,10 @@ function showSearchResult(result) {
     simBarDiv.style.display = "Block"
     balanceDiv.style.display = "Block"
     loadingDiv.style.display = "none"
+    openDiv.style.display = "none"
+    gridDiv.style.display = "Block"
     hideCases()
-    const caseId = "case" + result
+    let caseId = "case" + result
     document.getElementById(caseId).style.display = "Block"
 }
 
@@ -57,6 +65,8 @@ function showInventory() {
     mainDiv.style.display = "Block"
     simBarDiv.style.display = "Block"
     loadingDiv.style.display = "none"
+    openDiv.style.display = "none"
+    gridDiv.style.display = "none"
 
 }
 
@@ -140,7 +150,7 @@ function populateCases() {
 
 
     console.log(nameArray)
-    const lenCase = (nameArray.length) - 2
+    const lenCase = (nameArray.length) - 3
 
     //Resets Case Grid
     document.getElementById("caseGrid").innerHTML = "";
@@ -170,7 +180,7 @@ function populateCases() {
 
 function hideCases() {
 
-    const lenCase = (nameArray.length) - 2
+    const lenCase = (nameArray.length) - 3
 
     for (i = 0; i < lenCase; i++) {
         const id = "case" + i
@@ -181,7 +191,7 @@ function hideCases() {
 
 function showCases() {
 
-    const lenCase = (nameArray.length) - 2
+    const lenCase = (nameArray.length) - 3
 
     for (i = 0; i < lenCase; i++) {
         const id = "case" + i
@@ -294,7 +304,20 @@ function inventory() {
 }
 
 function openCase(caseString){
+    openDiv.style.display = "Block"
+    gridDiv.style.display = "none"
+
+
+    let val = linearSearch(nameArray, caseString)
+
+    document.getElementById("openCaseImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[val]].icon_url
+
     
+}
+
+function closeCase(){
+    openDiv.style.display = "none"
+    gridDiv.style.display = "Block"
 }
 
 function setBal(bal,a){
