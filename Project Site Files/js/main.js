@@ -311,7 +311,7 @@ function openCase(caseString){
     let val = linearSearch(nameArray, caseString)
 
     document.getElementById("openCaseImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[val]].icon_url
-
+    document.getElementById("openName").innerHTML = caseString;
     
 }
 
