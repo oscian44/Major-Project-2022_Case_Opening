@@ -120,6 +120,45 @@ li a.active {
   
 }
 
+.grid-container5{
+  display: grid;
+  grid-template-columns: 5% 15% 60% 15% 5%;
+  
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(211, 211, 211);
+  text-align: center;
+  text-align: center;
+  justify-content: center;
+}
+
+
+
+.grid-container5 > div {
+  background-color: #50465c;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 10px;
+  line-height: 1.4;
+  
+}
+
+#searchBarDiv{
+  grid-column: 3/4;
+  grid-row: 1/2;
+  
+}
+
+#searchBtnDiv{
+  grid-column: 4/ 5;
+  grid-row: 1/2;
+}
+
+#searchResetBtn{
+  grid-row: 2/3;
+  grid-column: 3/4;
+}
+
 .placeHolder{
   grid-column: 1/2;
   grid-row: 1/1;
@@ -205,26 +244,48 @@ br {
   padding: 10px;
 }
 #searchBar {
-  width: 30%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  width: 95%;
+  height: 60%;
+  padding: 20px 20px;
+  margin: 30px 0;
   box-sizing: border-box;
-  background-color: #50465c;
+  background-color: #1F1B24;
   color: white;
   border-radius: 4px;
+  text-align: center;
+  font-size: 20px;
+  
 }
 
-#searchBtn{
+#searchBtnImg{
   height: auto;
-  max-width: 40px;
+  max-width: 30px;
 }
 
 button{
+  color: black;
+  font-family: 'Roboto', sans-serif;
+  
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+#searchBtn{
+  background-color: #1F1B24;
+  float:left;
+  padding: 10%;
+  margin: 5% 0;
+  border-radius: 100%;
+}
+
+.whiteBtn{
+  background-color: #e6d9e0;
   padding: 10px 20px;
   margin: 8px 0;
   color: black;
   font-family: 'Roboto', sans-serif;
-  background-color: #e6d9e0;
 }
 
 .balance{
