@@ -6,11 +6,11 @@ var openDiv = document.getElementById("openPage")
 var gridDiv = document.getElementById("gridDiv")
 var loadingDiv = document.getElementById("loading")
 var inventoryDiv = document.getElementById("inventory")
+var searchDiv = document.getElementById("searchBarDiv")
 var imgHashdata;
 var itemData;
 var dataLoaded;
 var nameArray;
-
 
 //Load localstorage from browser
 var siteActive = localStorage.getItem("siteActive")
@@ -34,6 +34,7 @@ function showHome() {
     loadingDiv.style.display = "none"
     balanceDiv.style.display = "none"
     gridDiv.style.display = "none"
+    searchDiv.style.display = "none"
 }
 
 function showMain() {
@@ -43,6 +44,7 @@ function showMain() {
     balanceDiv.style.display = "Block"
     openDiv.style.display = "none"
     gridDiv.style.display = "Block"
+    searchDiv.style.display = "Block"
     loadingDiv.style.display = "none"
     document.getElementById("balanceVal").innerHTML = balance
 }
@@ -55,6 +57,7 @@ function showSearchResult(result) {
     loadingDiv.style.display = "none"
     openDiv.style.display = "none"
     gridDiv.style.display = "Block"
+    searchDiv.style.display = "Block"
     hideCases()
     let caseId = "case" + result
     document.getElementById(caseId).style.display = "Block"
@@ -162,7 +165,7 @@ function populateCases() {
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
         <div id="case` + i + `">
-            <img src="` + imgHash + `" alt="" class="caseImg" onclick="openCase('` + nameArray[i] + `')" id="caseImg` + i + `"> 
+            <img src="` + imgHash + `" alt="" class="caseImg" onclick="viewCase('` + nameArray[i] + `')" id="caseImg` + i + `"> 
             
                 <h1 class="caseName" id="caseName` + i + `">` + nameArray[i] + `</h1>
                 <h2 class="casePrice">$` + itemData.cases[nameArray[i]]["cost of case"] + `</h2>
@@ -303,8 +306,10 @@ function inventory() {
 
 }
 
-function openCase(caseString){
+function viewCase(caseString) {
+
     openDiv.style.display = "Block"
+    searchDiv.style.display = "none"
     gridDiv.style.display = "none"
 
 
@@ -312,16 +317,218 @@ function openCase(caseString){
 
     document.getElementById("openCaseImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[val]].icon_url
     document.getElementById("openName").innerHTML = caseString;
-    
+    document.getElementById("openPrice").innerHTML = "$" + itemData.cases[caseString]["cost of case"]
+    let onclickVal = `openCase("` + caseString + `")`
+    document.getElementById("openBtn").setAttribute('onclick', onclickVal)
+
+
+
 }
 
-function closeCase(){
+function randomizer(values) {
+    let i, pickedValue,
+        randomNr = Math.random(),
+        threshold = 0;
+
+    for (i = 0; i < values.length; i++) {
+        if (values[i].probability === '*') {
+            continue;
+        }
+
+        threshold += values[i].probability;
+        if (threshold > randomNr) {
+            pickedValue = values[i].value;
+            returnVal = values[i]
+            break;
+        }
+    }
+
+    return returnVal;
+}
+
+function getRandomItem(arr) {
+
+    // get random index value
+    const randomIndex = Math.floor(Math.random() * arr.length);
+
+    // get random item
+    const item = arr[randomIndex];
+
+    return item;
+}
+
+function openCase(caseString) {
+
+    //Item Rarity Odds
+    let rarityWeight = [{
+            value: "Special",
+            stat: 1,
+            probability: 0.0002558
+        },
+
+        {
+            value: "Covert",
+            stat: 1,
+            probability: 0.0006394
+        },
+        {
+            value: "Special",
+            stat: 0,
+            probability: 0.0025575
+        },
+        {
+            value: "Classified",
+            stat: 1,
+            probability: 0.0031969
+        },
+        {
+            value: "Covert",
+            stat: 0,
+            probability: 0.0063939
+        },
+        {
+            value: "Restricted",
+            stat: 1,
+            probability: 0.0159847
+        },
+        {
+            value: "Classified",
+            stat: 1,
+            probability: 0.0319693
+        },
+        {
+            value: "Mil-Spec Grade",
+            stat: 1,
+            probability: 0.0799233
+        },
+        {
+            value: "Restricted",
+            stat: 0,
+            probability: 0.1598465
+        },
+        {
+            value: "Mil-Spec Grade",
+            stat: 0,
+            probability: 0.7992327
+        },
+    ]
+
+    //Item Wear odds
+    let wearWeight = [{
+            value: "FN",
+            probability: 0.03
+        },
+        {
+            value: "BS",
+            probability: 0.16
+        },
+        {
+            value: "MW",
+            probability: 0.23
+        },
+        {
+            value: "WW",
+            probability: 0.25
+        },
+        {
+            value: "FT",
+            probability: 0.33
+        }
+
+
+
+    ]
+
+    let itemWear = randomizer(wearWeight)
+
+    let itemRarity = randomizer(rarityWeight)
+
+    let wonItem = {
+        name: "",
+        wear: "",
+        stat: 0
+    }
+
+    console.log(itemRarity)
+    console.log(itemWear)
+
+    console.log(Object.keys(itemData.cases[caseString]["skin values"][0]))
+
+    console.log(Object.keys(itemData.cases[caseString]["skin values"]))
+
+    let arrLength = Object.keys(itemData.cases[caseString]["skin values"]).length - 1
+    
+
+    let SpecialArray = []
+    let CovertArray = []
+    let ClassifiedArray = []
+    let RestrictedArray = []
+    let MilSpecArray = []
+    let itemNameArray = []
+
+
+    for (i = 0; i < arrLength; i++) {
+        let tempName = Object.keys(itemData.cases[caseString]["skin values"][i])
+        itemNameArray[i] = tempName[0]
+    }
+
+    for (i = 0; i < arrLength; i++) {
+
+        switch (itemData.cases[caseString]["skin values"][i][itemNameArray[i]].rarity) {
+            case "Special":
+                SpecialArray.push(itemNameArray[i]) 
+                break;
+            case "Covert":
+                CovertArray.push(itemNameArray[i]) 
+                break;
+            case "Classified":
+                ClassifiedArray.push(itemNameArray[i]) 
+                break;
+            case "Restricted":
+                RestrictedArray.push(itemNameArray[i]) 
+                break;
+            case "Mil-Spec Grade":
+                MilSpecArray.push(itemNameArray[i]) 
+                break;
+
+        }
+    }
+
+
+    switch (itemRarity.value) {
+        case "Special":
+            wonItem.name = getRandomItem(SpecialArray)
+            break;
+        case "Covert":
+            wonItem.name = getRandomItem(CovertArray)
+            break;
+        case "Classified":
+            wonItem.name = getRandomItem(ClassifiedArray)
+            break;
+        case "Restricted":
+            wonItem.name = getRandomItem(RestrictedArray)
+            break;
+        case "Mil-Spec Grade":
+            wonItem.name = getRandomItem(MilSpecArray)
+            break;
+    }
+
+    wonItem.wear = itemWear.value
+    wonItem.stat = itemRarity.stat
+
+    console.log("Item Name: " + wonItem.name + " Wear: " + wonItem.wear + " StatTrack: "+ wonItem.stat)
+
+
+}
+
+function closeCase() {
     openDiv.style.display = "none"
     gridDiv.style.display = "Block"
+    searchDiv.style.display = "Block"
 }
 
-function setBal(bal,a){
-    if (a == 1){
+function setBal(bal, a) {
+    if (a == 1) {
         siteActive = 1
         localStorage.setItem("siteActive", siteActive)
         initPage()

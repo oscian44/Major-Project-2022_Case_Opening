@@ -85,13 +85,13 @@
                 <div class="grid-container5">
                     <div></div>
                     <div></div>
-                    <div  id="searchBarDiv">
+                    <div id="searchBarDiv">
                         <input type="text" id="searchBar" placeholder="Enter Case Name Here">
                     </div>
                     <div id="searchBtnDiv">
                         <button id="searchBtn" onclick="searchCase()"><img id="searchBtnImg"
-                            src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/Search.svg"
-                            alt=""></button>
+                                src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/Search.svg"
+                                alt=""></button>
                     </div>
                     <div></div>
                     <div></div>
@@ -103,12 +103,6 @@
                     <div></div>
                 </div>
 
-
-
-
-
-                
-                
             </div>
 
             <div id="gridDiv">
@@ -131,25 +125,23 @@
             <div class="grid-container3">
                 <div>
                     <div class="grid-container4">
+                        <div id="placeHolder">
+                        </div>
                         <div class="openName">
                             <h1 id="openName"></h1>
                         </div>
-
-                        <div id="placeHolder">
-                        </div>
-
                         <div class="exitBtn">
                             <input id="exitButton" onclick="closeCase()" type="image"
                                 src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/exit_icon.svg">
                         </div>
 
+                        
                         <div class="openCaseImgDiv">
                             <img src="" alt="" id="openCaseImg" class="openCaseImg">
+                            <h1 id="openPrice"></h1>
+                            <button id="openBtn" onclick="">Open Case</button>
                         </div>
-
-                        <div>
-
-                        </div>
+                        
                     </div>
 
 
@@ -175,9 +167,14 @@
             alt="">
         <p class="tooltip">Loading Please Wait</p>
     </div>
-
-
+    
+    
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js">
+    function openCase(caseString){
+        
+    }
+</script>
 <script src="js/main.js"></script>
 
 </html>

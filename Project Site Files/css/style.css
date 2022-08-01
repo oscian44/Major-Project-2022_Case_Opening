@@ -123,7 +123,7 @@ li a.active {
 .grid-container5{
   display: grid;
   grid-template-columns: 5% 15% 60% 15% 5%;
-  
+  background-color: #1F1B24;
   padding: 10px;
   font-family: 'Roboto', sans-serif;
   color: rgb(211, 211, 211);
@@ -276,8 +276,10 @@ button:hover{
   background-color: #1F1B24;
   float:left;
   padding: 10%;
-  margin: 5% 0;
+  
   border-radius: 100%;
+  padding: 20px 20px;
+  margin: 30px 0;
 }
 
 .whiteBtn{
