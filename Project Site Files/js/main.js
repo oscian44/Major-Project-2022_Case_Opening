@@ -46,7 +46,7 @@ function showMain() {
     gridDiv.style.display = "Block"
     searchDiv.style.display = "Block"
     loadingDiv.style.display = "none"
-    document.getElementById("balanceVal").innerHTML = balance
+    updateBalance()
 }
 
 function showSearchResult(result) {
@@ -81,6 +81,15 @@ function initPage() {
         showHome()
     }
 }
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+
+  function updateBalance(){
+    document.getElementById("balanceVal").innerHTML = balance
+  }
 
 
 //Returns JSON object with image hashes
@@ -162,13 +171,14 @@ function populateCases() {
     for (i = 0; i < lenCase; i++) {
 
         const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[i]].icon_url
+        let caseCost = itemData.cases[nameArray[i]]["cost of case"] + 2.50
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
         <div id="case` + i + `">
             <img src="` + imgHash + `" alt="" class="caseImg" onclick="viewCase('` + nameArray[i] + `')" id="caseImg` + i + `"> 
             
                 <h1 class="caseName" id="caseName` + i + `">` + nameArray[i] + `</h1>
-                <h2 class="casePrice">$` + itemData.cases[nameArray[i]]["cost of case"] + `</h2>
+                <h2 class="casePrice">$` + caseCost + `</h2>
 
         </div>
         `);
@@ -307,17 +317,18 @@ function inventory() {
 }
 
 function viewCase(caseString) {
-
+    document.getElementById("openCaseImgDiv").style.display = "Block"
+    document.getElementById("wonItemImgDiv").style.display = "none"
     openDiv.style.display = "Block"
     searchDiv.style.display = "none"
     gridDiv.style.display = "none"
-
+    let caseCost = itemData.cases[caseString]["cost of case"] + 2.50
 
     let val = linearSearch(nameArray, caseString)
 
     document.getElementById("openCaseImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[val]].icon_url
     document.getElementById("openName").innerHTML = caseString;
-    document.getElementById("openPrice").innerHTML = "$" + itemData.cases[caseString]["cost of case"]
+    document.getElementById("openPrice").innerHTML = "$" + caseCost
     let onclickVal = `openCase("` + caseString + `")`
     document.getElementById("openBtn").setAttribute('onclick', onclickVal)
 
@@ -358,7 +369,8 @@ function getRandomItem(arr) {
 }
 
 function openCase(caseString) {
-
+    document.getElementById("openCaseImgDiv").style.display = "Block"
+    document.getElementById("wonItemImgDiv").style.display = "none"
     //Item Rarity Odds
     let rarityWeight = [{
             value: "Special",
@@ -415,23 +427,23 @@ function openCase(caseString) {
 
     //Item Wear odds
     let wearWeight = [{
-            value: "FN",
+            value: "Factory New",
             probability: 0.03
         },
         {
-            value: "BS",
+            value: "Battle-Scarred",
             probability: 0.16
         },
         {
-            value: "MW",
+            value: "Minimal Wear",
             probability: 0.23
         },
         {
-            value: "WW",
+            value: "Well-Worn",
             probability: 0.25
         },
         {
-            value: "FT",
+            value: "Field-Tested",
             probability: 0.33
         }
 
@@ -516,8 +528,31 @@ function openCase(caseString) {
     wonItem.wear = itemWear.value
     wonItem.stat = itemRarity.stat
 
-    console.log("Item Name: " + wonItem.name + " Wear: " + wonItem.wear + " StatTrack: "+ wonItem.stat)
+    let wonItemFullName = wonItem.name + " (" + wonItem.wear + ")"
+    
+    console.log(wonItemFullName)
+    
+    document.getElementById("wonItemImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[wonItemFullName].icon_url
+    document.getElementById("wonItemName").innerHTML = "Congratulations you won: " + wonItemFullName
 
+    console.log("Item Name: " + wonItem.name + " Wear: " + wonItem.wear + " StatTrack: "+ wonItem.stat)
+    let caseCost = itemData.cases[caseString]["cost of case"] + 2.50
+    let tempBal = balance - caseCost
+    let roundBal = (Math.round(tempBal * 100) / 100).toFixed(2)
+    setBal(roundBal)
+    caseAnimation()
+    
+}
+
+async function caseAnimation(){
+    document.getElementById("openCaseImg").classList.add("caseOpenAnimation1")
+    await sleep(3001)
+    document.getElementById("openCaseImg").classList.remove("caseOpenAnimation1")
+    document.getElementById("openCaseImg").classList.add("caseOpenAnimation2")
+    await sleep(1001)
+    document.getElementById("openCaseImg").classList.remove("caseOpenAnimation2")
+    document.getElementById("openCaseImgDiv").style.display = "none"
+    document.getElementById("wonItemImgDiv").style.display = "Block"
 
 }
 
@@ -536,7 +571,7 @@ function setBal(bal, a) {
     }
     balance = bal
     localStorage.setItem("balance", balance)
-    document.getElementById("balanceVal").innerHTML = balance
+    updateBalance()
     console.log("balance is: " + balance)
 }
 
