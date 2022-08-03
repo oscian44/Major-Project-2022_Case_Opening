@@ -7,6 +7,7 @@ var gridDiv = document.getElementById("gridDiv")
 var loadingDiv = document.getElementById("loading")
 var inventoryDiv = document.getElementById("inventory")
 var searchDiv = document.getElementById("searchBarDiv")
+var casePageDiv = document.getElementById("casePage")
 var imgHashdata;
 var itemData;
 var dataLoaded;
@@ -14,7 +15,7 @@ var nameArray;
 
 //Load localstorage from browser
 var siteActive = localStorage.getItem("siteActive")
-var inventoryData = JSON.parse(localStorage.getItem("inventoryDat"));
+var inventoryData = JSON.parse(localStorage.getItem("inventoryData"));
 var totalSpend = localStorage.getItem("totalSpend")
 var totalSold = localStorage.getItem("totalSold")
 var totalProfit = localStorage.getItem("totalProfit")
@@ -23,6 +24,20 @@ var balance = localStorage.getItem("balance")
 
 if (siteActive == null) {
     siteActive = 0
+    inventoryData = []
+    totalSpend = 0
+    totalSold = 0
+    totalProfit = 0
+    inventoryValue = 0
+    balance = 0
+
+    localStorage.setItem("siteActive", siteActive)
+    localStorage.setItem("inventoryData", JSON.stringify(inventoryData))
+    localStorage.setItem("totalSpend", totalSpend)
+    localStorage.setItem("totalSold", totalSold)
+    localStorage.setItem("totalProfit", totalProfit)
+    localStorage.setItem("inventoryValue", inventoryValue)
+    localStorage.setItem("balance", balance)
 }
 
 //Functions which affect the active site DIVs
@@ -35,8 +50,11 @@ function showHome() {
     balanceDiv.style.display = "none"
     gridDiv.style.display = "none"
     searchDiv.style.display = "none"
+    casePageDiv.style.display = "none"
+    inventoryDiv.style.display = "none"
 }
 
+//Shows Divs for main case grid page
 function showMain() {
     homeDiv.style.display = "none"
     mainDiv.style.display = "Block"
@@ -46,9 +64,12 @@ function showMain() {
     gridDiv.style.display = "Block"
     searchDiv.style.display = "Block"
     loadingDiv.style.display = "none"
+    casePageDiv.style.display = "Block"
+    inventoryDiv.style.display = "none"
     updateBalance()
 }
 
+//Shows Divs for search results
 function showSearchResult(result) {
     homeDiv.style.display = "none"
     mainDiv.style.display = "Block"
@@ -58,19 +79,25 @@ function showSearchResult(result) {
     openDiv.style.display = "none"
     gridDiv.style.display = "Block"
     searchDiv.style.display = "Block"
+    casePageDiv.style.display = "Block"
+    inventoryDiv.style.display = "none"
     hideCases()
     let caseId = "case" + result
     document.getElementById(caseId).style.display = "Block"
 }
 
+//Shows Divs for inventory
 function showInventory() {
     homeDiv.style.display = "none"
     mainDiv.style.display = "Block"
+    inventoryDiv.style.display = "Block"
+    casePageDiv.style.display = "none"
     simBarDiv.style.display = "Block"
-    loadingDiv.style.display = "none"
+    balanceDiv.style.display = "Block"
     openDiv.style.display = "none"
     gridDiv.style.display = "none"
-
+    searchDiv.style.display = "none"
+    loadingDiv.style.display = "none"
 }
 
 //Sets page depending on browser stored value
@@ -82,23 +109,26 @@ function initPage() {
     }
 }
 
+
+//JS implementation of sleep function for animations
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-  
+}
 
-  function updateBalance(){
-    document.getElementById("balanceVal").innerHTML = balance
-  }
+//Updates the balance on the HTML page
+function updateBalance() {
+    document.getElementById("balanceVal").innerHTML = "$" + balance
+}
 
 
 //Returns JSON object with image hashes
 function loadImgHash(isSiteActive) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            homeDiv.style.display = "none"
+            homeDiv.style.display = "none";
             mainDiv.style.display = "none";
-            loadingDiv.style.display = "Block"
+            simBarDiv.style.display = "none";
+            loadingDiv.style.display = "Block";
 
             fetch('https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/json/csgobackpack.json')
                 .then(response => response.json())
@@ -125,8 +155,9 @@ function loadImgHash(isSiteActive) {
 //Returns most of what is needed from a mirror of the CSGO Backpack API
 async function loadItemData(isSiteActive) {
 
-    homeDiv.style.display = "none"
+    homeDiv.style.display = "none";
     mainDiv.style.display = "none";
+    simBarDiv.style.display = "none";
     loadingDiv.style.display = "Block"
 
     fetch('https://raw.githubusercontent.com/jonese1234/Csgo-Case-Data/master/latest.json')
@@ -171,7 +202,7 @@ function populateCases() {
     for (i = 0; i < lenCase; i++) {
 
         const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[i]].icon_url
-        let caseCost = itemData.cases[nameArray[i]]["cost of case"] + 2.50
+        let caseCost = (Math.round((itemData.cases[nameArray[i]]["cost of case"] + 2.50) * 100) / 100).toFixed(2)
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
         <div id="case` + i + `">
@@ -191,6 +222,55 @@ function populateCases() {
 
 }
 
+//Populates the grid for the inventory
+function populateInventory() {
+    let array = inventoryData
+    let lenItem = inventoryData.length
+
+    //Resets Item Grid
+    document.getElementById("inventoryGrid").innerHTML = "";
+
+    if (lenItem == 0) {
+        document.getElementById("inventoryGrid").insertAdjacentHTML("afterbegin", `
+        <div id="itemTemp">
+            <h1>Inventory Empty</h1>
+        </div>
+        `);
+    } else {
+        for (i = 0; i < lenItem; i++) {
+
+            const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[array[i].name].icon_url
+
+            document.getElementById("inventoryGrid").insertAdjacentHTML("afterbegin", `
+             <div id="name` + i + `">
+                 <img src="` + imgHash + `" alt="" class="itemImg" id="itemImg` + i + `"> 
+                 
+                     <h1 class="inventoryItemName" id="inventoryItemName` + i + `">` + array[i].name + `</h1>
+                     <h2 class="inventoryItemPrice">$` + (Math.round((array[i].price) * 100) / 100).toFixed(2) + `</h2>
+                     <button class="whiteBtn" onclick="sellItem(` + i + `)">Sell Item?</button>
+     
+             </div>
+             `);
+
+        }
+    }
+
+
+
+}
+
+function sellItem(num) {
+    let tempBal = Number(balance) + inventoryData[num].price
+    let roundBal = (Math.round((tempBal) * 100) / 100).toFixed(2)
+    setBal(roundBal)
+    inventoryData.splice(num, 1)
+    localStorage.setItem("inventoryData", JSON.stringify(inventoryData))
+    totalSold = totalSold + Number(inventoryData[num].price)
+    localStorage.setItem("totalSold", totalSold)
+    populateInventory()
+}
+
+//Hides all Case Divs
 function hideCases() {
 
     const lenCase = (nameArray.length) - 3
@@ -202,6 +282,7 @@ function hideCases() {
 
 }
 
+//Displays all case divs
 function showCases() {
 
     const lenCase = (nameArray.length) - 3
@@ -213,6 +294,7 @@ function showCases() {
 
 }
 
+//Refreshes the site when needed
 function refreshSite() {
     loadItemData(siteActive)
     dataLoaded = 1
@@ -227,22 +309,22 @@ function simpTerm() {
 
 }
 
-//Sorts item name array
-function sortItems(array) {
+//Insertion sort for item name array
+function sortItems(inputArr) {
 
-    function compare(a, b) {
-        const thingA = a.toUpperCase();
-        const thingB = b.toUpperCase();
-
-        let comparison = 0;
-        if (thingA > thingB) {
-            comparison = 1;
-        } else if (thingA < thingB) {
-            comparison = -1;
+    let n = inputArr.length;
+    for (let i = 1; i < n; i++) {
+        // Choosing the first element in our unsorted subarray
+        let current = inputArr[i];
+        // The last element of our sorted subarray
+        let j = i - 1;
+        while ((j > -1) && (current < inputArr[j])) {
+            inputArr[j + 1] = inputArr[j];
+            j--;
         }
-        return comparison;
+        inputArr[j + 1] = current;
     }
-    return array.slice(0).sort(compare);
+    return inputArr.slice(0)
 
 }
 
@@ -303,13 +385,14 @@ function searchCase() {
 }
 
 function home() {
-    document.getElementById("inventory").setAttribute("class", "");
+    document.getElementById("inventoryBar").setAttribute("class", "");
     initPage()
 
 }
 
 function inventory() {
-    document.getElementById("inventory").setAttribute("class", "active");
+    document.getElementById("inventoryBar").setAttribute("class", "active");
+    populateInventory()
     showInventory()
 
 
@@ -317,18 +400,19 @@ function inventory() {
 }
 
 function viewCase(caseString) {
+
     document.getElementById("openCaseImgDiv").style.display = "Block"
     document.getElementById("wonItemImgDiv").style.display = "none"
     openDiv.style.display = "Block"
     searchDiv.style.display = "none"
     gridDiv.style.display = "none"
-    let caseCost = itemData.cases[caseString]["cost of case"] + 2.50
 
+    let caseCost = (Math.round((itemData.cases[caseString]["cost of case"] + 2.50) * 100) / 100).toFixed(2)
     let val = linearSearch(nameArray, caseString)
 
     document.getElementById("openCaseImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[val]].icon_url
     document.getElementById("openName").innerHTML = caseString;
-    document.getElementById("openPrice").innerHTML = "$" + caseCost
+    document.getElementById("openPrice").innerHTML = "Case Price: $" + caseCost
     let onclickVal = `openCase("` + caseString + `")`
     document.getElementById("openBtn").setAttribute('onclick', onclickVal)
 
@@ -369,182 +453,222 @@ function getRandomItem(arr) {
 }
 
 function openCase(caseString) {
-    document.getElementById("openCaseImgDiv").style.display = "Block"
-    document.getElementById("wonItemImgDiv").style.display = "none"
-    //Item Rarity Odds
-    let rarityWeight = [{
-            value: "Special",
-            stat: 1,
-            probability: 0.0002558
-        },
 
-        {
-            value: "Covert",
-            stat: 1,
-            probability: 0.0006394
-        },
-        {
-            value: "Special",
-            stat: 0,
-            probability: 0.0025575
-        },
-        {
-            value: "Classified",
-            stat: 1,
-            probability: 0.0031969
-        },
-        {
-            value: "Covert",
-            stat: 0,
-            probability: 0.0063939
-        },
-        {
-            value: "Restricted",
-            stat: 1,
-            probability: 0.0159847
-        },
-        {
-            value: "Classified",
-            stat: 1,
-            probability: 0.0319693
-        },
-        {
-            value: "Mil-Spec Grade",
-            stat: 1,
-            probability: 0.0799233
-        },
-        {
-            value: "Restricted",
-            stat: 0,
-            probability: 0.1598465
-        },
-        {
-            value: "Mil-Spec Grade",
-            stat: 0,
-            probability: 0.7992327
-        },
-    ]
+    let caseCost = (Math.round((itemData.cases[caseString]["cost of case"] + 2.50) * 100) / 100).toFixed(2)
+    let ifBal = Number(balance)
+    let ifCost = Number(caseCost)
+    if ( ifBal > ifCost) {
+        document.getElementById("openCaseImgDiv").style.display = "Block"
+        document.getElementById("wonItemImgDiv").style.display = "none"
+        document.getElementById("openBtnDiv").style.display = "none"
+        //Item Rarity Odds
+        let rarityWeight = [{
+                value: "Special",
+                stat: 1,
+                probability: 0.0002558
+            },
 
-    //Item Wear odds
-    let wearWeight = [{
-            value: "Factory New",
-            probability: 0.03
-        },
-        {
-            value: "Battle-Scarred",
-            probability: 0.16
-        },
-        {
-            value: "Minimal Wear",
-            probability: 0.23
-        },
-        {
-            value: "Well-Worn",
-            probability: 0.25
-        },
-        {
-            value: "Field-Tested",
-            probability: 0.33
+            {
+                value: "Covert",
+                stat: 1,
+                probability: 0.0006394
+            },
+            {
+                value: "Special",
+                stat: 0,
+                probability: 0.0025575
+            },
+            {
+                value: "Classified",
+                stat: 1,
+                probability: 0.0031969
+            },
+            {
+                value: "Covert",
+                stat: 0,
+                probability: 0.0063939
+            },
+            {
+                value: "Restricted",
+                stat: 1,
+                probability: 0.0159847
+            },
+            {
+                value: "Classified",
+                stat: 1,
+                probability: 0.0319693
+            },
+            {
+                value: "Mil-Spec Grade",
+                stat: 1,
+                probability: 0.0799233
+            },
+            {
+                value: "Restricted",
+                stat: 0,
+                probability: 0.1598465
+            },
+            {
+                value: "Mil-Spec Grade",
+                stat: 0,
+                probability: 0.7992327
+            },
+        ]
+
+        //Item Wear odds
+        let wearWeight = [{
+                value: "Factory New",
+                probability: 0.03
+            },
+            {
+                value: "Battle-Scarred",
+                probability: 0.16
+            },
+            {
+                value: "Minimal Wear",
+                probability: 0.23
+            },
+            {
+                value: "Well-Worn",
+                probability: 0.25
+            },
+            {
+                value: "Field-Tested",
+                probability: 0.33
+            }
+
+
+
+        ]
+
+        let itemWear = randomizer(wearWeight)
+
+        let itemRarity = randomizer(rarityWeight)
+
+        let wonItem = {
+            name: "",
+            wear: "",
+            stat: 0
+        }
+
+        console.log(itemRarity)
+        console.log(itemWear)
+
+        console.log(Object.keys(itemData.cases[caseString]["skin values"][0]))
+
+        console.log(Object.keys(itemData.cases[caseString]["skin values"]))
+
+        let arrLength = Object.keys(itemData.cases[caseString]["skin values"]).length - 1
+
+
+        let SpecialArray = []
+        let CovertArray = []
+        let ClassifiedArray = []
+        let RestrictedArray = []
+        let MilSpecArray = []
+        let itemNameArray = []
+
+
+        for (i = 0; i < arrLength; i++) {
+            let tempName = Object.keys(itemData.cases[caseString]["skin values"][i])
+            itemNameArray[i] = tempName[0]
+        }
+
+        for (i = 0; i < arrLength; i++) {
+
+            switch (itemData.cases[caseString]["skin values"][i][itemNameArray[i]].rarity) {
+                case "Special":
+                    SpecialArray.push(itemNameArray[i])
+                    break;
+                case "Covert":
+                    CovertArray.push(itemNameArray[i])
+                    break;
+                case "Classified":
+                    ClassifiedArray.push(itemNameArray[i])
+                    break;
+                case "Restricted":
+                    RestrictedArray.push(itemNameArray[i])
+                    break;
+                case "Mil-Spec Grade":
+                    MilSpecArray.push(itemNameArray[i])
+                    break;
+
+            }
         }
 
 
-
-    ]
-
-    let itemWear = randomizer(wearWeight)
-
-    let itemRarity = randomizer(rarityWeight)
-
-    let wonItem = {
-        name: "",
-        wear: "",
-        stat: 0
-    }
-
-    console.log(itemRarity)
-    console.log(itemWear)
-
-    console.log(Object.keys(itemData.cases[caseString]["skin values"][0]))
-
-    console.log(Object.keys(itemData.cases[caseString]["skin values"]))
-
-    let arrLength = Object.keys(itemData.cases[caseString]["skin values"]).length - 1
-    
-
-    let SpecialArray = []
-    let CovertArray = []
-    let ClassifiedArray = []
-    let RestrictedArray = []
-    let MilSpecArray = []
-    let itemNameArray = []
-
-
-    for (i = 0; i < arrLength; i++) {
-        let tempName = Object.keys(itemData.cases[caseString]["skin values"][i])
-        itemNameArray[i] = tempName[0]
-    }
-
-    for (i = 0; i < arrLength; i++) {
-
-        switch (itemData.cases[caseString]["skin values"][i][itemNameArray[i]].rarity) {
+        switch (itemRarity.value) {
             case "Special":
-                SpecialArray.push(itemNameArray[i]) 
+                wonItem.name = getRandomItem(SpecialArray)
                 break;
             case "Covert":
-                CovertArray.push(itemNameArray[i]) 
+                wonItem.name = getRandomItem(CovertArray)
                 break;
             case "Classified":
-                ClassifiedArray.push(itemNameArray[i]) 
+                wonItem.name = getRandomItem(ClassifiedArray)
                 break;
             case "Restricted":
-                RestrictedArray.push(itemNameArray[i]) 
+                wonItem.name = getRandomItem(RestrictedArray)
                 break;
             case "Mil-Spec Grade":
-                MilSpecArray.push(itemNameArray[i]) 
+                wonItem.name = getRandomItem(MilSpecArray)
                 break;
-
         }
+
+
+
+        wonItem.wear = itemWear.value
+
+        if (itemRarity.stat == 1) {
+            wonItem.stat = "StatTrak™ "
+        } else {
+            wonItem.stat = ""
+        }
+
+        let wonItemFullName = wonItem.stat + wonItem.name + " (" + wonItem.wear + ")"
+
+        //Workaround for cases such as the CS:GO weapon case where items do not exist in all four wear values
+        if (imgHashdata.items_list[wonItemFullName] != null) {
+            //Logs Won Item name to console
+            console.log(wonItemFullName)
+
+            //Adds won Item to inventory array
+            let obj = {
+                name: wonItemFullName,
+                price: imgHashdata.items_list[wonItemFullName].price["7_days"].average
+            }
+            inventoryData.push(obj)
+            localStorage.setItem("inventoryData", JSON.stringify(inventoryData))
+
+            //Pushes Won Item Data to HTML
+            document.getElementById("wonItemImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[wonItemFullName].icon_url
+            document.getElementById("wonItemName").innerHTML = "Congratulations you won: " + wonItemFullName
+            document.getElementById("wonItemPrice").innerHTML = "Item Price: " + "$" + imgHashdata.items_list[wonItemFullName].price["7_days"].average
+
+
+            let caseCost = (Math.round((itemData.cases[caseString]["cost of case"] + 2.50) * 100) / 100).toFixed(2)
+            let tempBal = balance - caseCost
+            let roundBal = (Math.round(tempBal * 100) / 100).toFixed(2)
+
+            totalSpend = totalSpend + Number(caseCost)
+            localStorage.setItem("totalSpend", totalSpend)
+
+            setBal(roundBal)
+
+            caseAnimation()
+        } else {
+            console.log("Item with abnormal wear value detected, re-rolling case")
+            openCase(caseString)
+        }
+
+    } else {
+        alert("Balance Insufficient, Please Sell Items To Continue or End Simulation")
     }
 
 
-    switch (itemRarity.value) {
-        case "Special":
-            wonItem.name = getRandomItem(SpecialArray)
-            break;
-        case "Covert":
-            wonItem.name = getRandomItem(CovertArray)
-            break;
-        case "Classified":
-            wonItem.name = getRandomItem(ClassifiedArray)
-            break;
-        case "Restricted":
-            wonItem.name = getRandomItem(RestrictedArray)
-            break;
-        case "Mil-Spec Grade":
-            wonItem.name = getRandomItem(MilSpecArray)
-            break;
-    }
-
-    wonItem.wear = itemWear.value
-    wonItem.stat = itemRarity.stat
-
-    let wonItemFullName = wonItem.name + " (" + wonItem.wear + ")"
-    
-    console.log(wonItemFullName)
-    
-    document.getElementById("wonItemImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[wonItemFullName].icon_url
-    document.getElementById("wonItemName").innerHTML = "Congratulations you won: " + wonItemFullName
-
-    console.log("Item Name: " + wonItem.name + " Wear: " + wonItem.wear + " StatTrack: "+ wonItem.stat)
-    let caseCost = itemData.cases[caseString]["cost of case"] + 2.50
-    let tempBal = balance - caseCost
-    let roundBal = (Math.round(tempBal * 100) / 100).toFixed(2)
-    setBal(roundBal)
-    caseAnimation()
-    
 }
 
-async function caseAnimation(){
+async function caseAnimation() {
     document.getElementById("openCaseImg").classList.add("caseOpenAnimation1")
     await sleep(3001)
     document.getElementById("openCaseImg").classList.remove("caseOpenAnimation1")
@@ -553,6 +677,7 @@ async function caseAnimation(){
     document.getElementById("openCaseImg").classList.remove("caseOpenAnimation2")
     document.getElementById("openCaseImgDiv").style.display = "none"
     document.getElementById("wonItemImgDiv").style.display = "Block"
+    document.getElementById("openBtnDiv").style.display = "Block"
 
 }
 

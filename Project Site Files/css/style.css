@@ -71,6 +71,7 @@ li a.active {
   background-color: #1F1B24;
   padding: 10px;
   font-family: 'Roboto', sans-serif;
+  justify-content: normal;
   color: rgb(211, 211, 211);
 }
 
@@ -82,6 +83,7 @@ li a.active {
   padding: 10px;
   font-family: 'Roboto', sans-serif;
   color: rgb(211, 211, 211);
+  
   text-align: center;
 }
 
@@ -100,7 +102,7 @@ li a.active {
   display: grid;
   grid-template-columns: auto;
   gap: 10px;
-  background-color: #1F1B24;
+  background-color: #50465c;
   padding: 10px;
   font-family: 'Roboto', sans-serif;
   color: rgb(211, 211, 211);
@@ -119,6 +121,8 @@ li a.active {
   text-align: center;
   justify-content: space-evenly;
   align-content: center;
+  background-color: #0f0c12;
+
   
 }
 
@@ -130,11 +134,38 @@ li a.active {
   font-family: 'Roboto', sans-serif;
   color: rgb(211, 211, 211);
   text-align: center;
+  justify-content: center;
+}
+
+.grid-container6 {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  background-color: #1F1B24;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  
+  color: rgb(211, 211, 211);
+}
+.grid-container7{
+  display: grid;
+  grid-template-columns: 5% 15% 60% 15% 5%;
+  background-color: #1F1B24;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(211, 211, 211);
   text-align: center;
   justify-content: center;
 }
 
-
+.grid-container6 > div {
+  background-color: #50465c;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 10px;
+  line-height: 1.4;
+  
+}
 
 .grid-container5 > div {
   background-color: #50465c;
@@ -144,8 +175,17 @@ li a.active {
   line-height: 1.4;
   
 }
+#itemTemp{
+  grid-column: 2/3
+}
 
 #searchBarDiv{
+  grid-column: 3/4;
+  grid-row: 1/2;
+  
+}
+
+#homeBtn{
   grid-column: 3/4;
   grid-row: 1/2;
   
@@ -174,18 +214,23 @@ li a.active {
 .openName{
   grid-column: 2/3;
   grid-row: 1/2;
-  background-color: #0f0c12;
+  
+}
+
+#openName{
+  text-decoration: underline;
+  font-size: 25px;
 }
 
 .openCaseImgDiv{
   grid-column: 1/4;
   grid-row: 2/5;
-  background-color: #0f0c12;
+  
   
 }
 
 .grid-container3 > div {
-  background-color: #50465c;
+  background-color: #0f0c12;
   text-align: center;
   padding: 10px 0;
   font-size: 10px;
@@ -204,7 +249,10 @@ li a.active {
 }
 
 
-
+.itemImg{
+  height: auto;
+  width: 240px;
+}
 
 .grid-container2 > div {
   background-color: #50465c;

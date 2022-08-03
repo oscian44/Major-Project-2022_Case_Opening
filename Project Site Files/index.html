@@ -15,14 +15,14 @@
         <ul>
             <li class="menuTitle"><a onclick="home()" id="home">CS:GO Case Simulator</a></li>
             <div id="menubarSim" class="menubarSim">
-                <li class="menuItem"><a class="" onclick="inventory()" id="inventory">Inventory</a></li>
+                <li class="menuItem"><a class="" onclick="inventory()" id="inventoryBar">Inventory</a></li>
                 <li class="menuItem"><a class="" onclick="populateCases()" id="endsim">End Simulation</a></li>
                 <li class="menuItem"><a onclick="refreshSite()">Reload Price Data</a></li>
             </div>
 
 
             <div id="balance" class="menubarSim balance">
-                <li class="menuItem"><a class="balance" id="balance$">$</a></li>
+                <li class="menuItem"><a class="balance" id="balance$">Balance:</a></li>
                 <li class="menuItem"><a class="balance" id="balanceVal"></a></li>
             </div>
         </ul>
@@ -76,6 +76,17 @@
     <div id="mainsite">
 
         <div id="inventory">
+            <div class="grid-container7">
+                
+                <div id="homeBtn">
+                    <button onclick="home()" class="whiteBtn">Return Home</button>
+                </div>
+                
+            </div>
+
+            <div id="inventoryGrid" class="grid-container6">
+
+            </div>
 
         </div>
 
@@ -145,10 +156,14 @@
                             <div id="wonItemImgDiv">
                                 <img src="" alt="" id="wonItemImg" class="">
                                 <h1 id="wonItemName" class="text-jiggle"></h1>
+                                <h1 id="wonItemPrice"></h1>
                             </div>
                             
                             <h1 id="openPrice"></h1>
-                            <button id="openBtn" onclick="" class="whiteBtn">Open Case</button>
+                            <div id="openBtnDiv">
+                                <button id="openBtn" onclick="" class="whiteBtn">Open Case</button>
+                            </div>
+                            
                         </div>
 
                     </div>
