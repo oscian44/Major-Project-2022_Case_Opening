@@ -8,10 +8,88 @@ var loadingDiv = document.getElementById("loading")
 var inventoryDiv = document.getElementById("inventory")
 var searchDiv = document.getElementById("searchBarDiv")
 var casePageDiv = document.getElementById("casePage")
+var endScreenDiv = document.getElementById("simulationEnd")
 var imgHashdata;
 var itemData;
 var dataLoaded;
 var nameArray;
+
+//Item Rarity Odds
+var rarityWeight = [{
+    value: "Special",
+    stat: 1,
+    probability: 0.0002558
+},
+
+{
+    value: "Covert",
+    stat: 1,
+    probability: 0.0006394
+},
+{
+    value: "Special",
+    stat: 0,
+    probability: 0.0025575
+},
+{
+    value: "Classified",
+    stat: 1,
+    probability: 0.0031969
+},
+{
+    value: "Covert",
+    stat: 0,
+    probability: 0.0063939
+},
+{
+    value: "Restricted",
+    stat: 1,
+    probability: 0.0159847
+},
+{
+    value: "Classified",
+    stat: 1,
+    probability: 0.0319693
+},
+{
+    value: "Mil-Spec Grade",
+    stat: 1,
+    probability: 0.0799233
+},
+{
+    value: "Restricted",
+    stat: 0,
+    probability: 0.1598465
+},
+{
+    value: "Mil-Spec Grade",
+    stat: 0,
+    probability: 0.7992327
+},
+]
+
+//Item Wear odds
+var wearWeight = [{
+    value: "Factory New",
+    probability: 0.03
+},
+{
+    value: "Battle-Scarred",
+    probability: 0.16
+},
+{
+    value: "Minimal Wear",
+    probability: 0.23
+},
+{
+    value: "Well-Worn",
+    probability: 0.25
+},
+{
+    value: "Field-Tested",
+    probability: 0.33
+}
+]
 
 //Load localstorage from browser
 var siteActive = localStorage.getItem("siteActive")
@@ -40,6 +118,25 @@ if (siteActive == null) {
     localStorage.setItem("balance", balance)
 }
 
+function resetSim(){
+    siteActive = 0
+    inventoryData = []
+    totalSpend = 0
+    totalSold = 0
+    totalProfit = 0
+    inventoryValue = 0
+    balance = 0
+
+    localStorage.setItem("siteActive", siteActive)
+    localStorage.setItem("inventoryData", JSON.stringify(inventoryData))
+    localStorage.setItem("totalSpend", totalSpend)
+    localStorage.setItem("totalSold", totalSold)
+    localStorage.setItem("totalProfit", totalProfit)
+    localStorage.setItem("inventoryValue", inventoryValue)
+    localStorage.setItem("balance", balance)
+    location.reload();
+}
+
 //Functions which affect the active site DIVs
 function showHome() {
     homeDiv.style.display = "Block"
@@ -52,6 +149,7 @@ function showHome() {
     searchDiv.style.display = "none"
     casePageDiv.style.display = "none"
     inventoryDiv.style.display = "none"
+    endScreenDiv.style.display = "none"
 }
 
 //Shows Divs for main case grid page
@@ -66,6 +164,7 @@ function showMain() {
     loadingDiv.style.display = "none"
     casePageDiv.style.display = "Block"
     inventoryDiv.style.display = "none"
+    endScreenDiv.style.display = "none"
     updateBalance()
 }
 
@@ -81,6 +180,7 @@ function showSearchResult(result) {
     searchDiv.style.display = "Block"
     casePageDiv.style.display = "Block"
     inventoryDiv.style.display = "none"
+    endScreenDiv.style.display = "none"
     hideCases()
     let caseId = "case" + result
     document.getElementById(caseId).style.display = "Block"
@@ -98,6 +198,32 @@ function showInventory() {
     gridDiv.style.display = "none"
     searchDiv.style.display = "none"
     loadingDiv.style.display = "none"
+    endScreenDiv.style.display = "none"
+}
+
+//Shows Divs for simulation end
+function endSim(){
+    endScreenDiv.style.display = "Block"
+    homeDiv.style.display = "none"
+    mainDiv.style.display = "Block"
+    inventoryDiv.style.display = "none"
+    casePageDiv.style.display = "none"
+    simBarDiv.style.display = "none"
+    balanceDiv.style.display = "none"
+    openDiv.style.display = "none"
+    gridDiv.style.display = "none"
+    searchDiv.style.display = "none"
+    loadingDiv.style.display = "none"
+
+    document.getElementById("totalSpend").innerHTML = "$" + totalSpend
+    document.getElementById("totalSold").innerHTML = "$" + totalSold
+    inventoryValCalc()
+    document.getElementById("inventoryValue").innerHTML = "$" + inventoryValue
+    document.getElementById("balEnd").innerHTML = "$" + balance
+    let profitNoInven = (Math.round(((parseFloat(totalSold) + parseFloat(balance)) - parseFloat(totalSpend)) * 100) / 100).toFixed(2)
+    document.getElementById("profitNoInven").innerHTML = "$" + profitNoInven
+    let profitInven = (Math.round(((parseFloat(totalSold) + parseFloat(balance) + parseFloat(inventoryValue)) - parseFloat(totalSpend)) * 100) / 100).toFixed(2)
+    document.getElementById("profitInven").innerHTML = "$" + profitInven
 }
 
 //Sets page depending on browser stored value
@@ -170,7 +296,6 @@ async function loadItemData(isSiteActive) {
         });
     //Prevents users with faster internet connections from having the loading gif flash on screen for a split second during loading times
     await loadImgHash(isSiteActive);
-
     nameArray = Object.keys(itemData.cases)
 
     if (isSiteActive == 1) {
@@ -180,25 +305,16 @@ async function loadItemData(isSiteActive) {
         setTimeout(showHome(), 2000)
     }
 
-
-
-
 }
-
-
-
 
 //Populates the grid of cases on the main site page
 function populateCases() {
-
-
-    console.log(nameArray)
     const lenCase = (nameArray.length) - 3
 
     //Resets Case Grid
     document.getElementById("caseGrid").innerHTML = "";
 
-
+    //Inserts HTML to caseGrid
     for (i = 0; i < lenCase; i++) {
 
         const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[nameArray[i]].icon_url
@@ -206,19 +322,14 @@ function populateCases() {
 
         document.getElementById("caseGrid").insertAdjacentHTML("afterbegin", `
         <div id="case` + i + `">
-            <img src="` + imgHash + `" alt="" class="caseImg" onclick="viewCase('` + nameArray[i] + `')" id="caseImg` + i + `"> 
-            
+            <img src="` + imgHash + `" alt="" class="caseImg" onclick="viewCase('` + nameArray[i] + `')" id="caseImg` + i + `">  
                 <h1 class="caseName" id="caseName` + i + `">` + nameArray[i] + `</h1>
                 <h2 class="casePrice">$` + caseCost + `</h2>
-
         </div>
         `);
-
     }
-
+    //Shows Case Divs
     showCases()
-
-
 
 }
 
@@ -238,9 +349,7 @@ function populateInventory() {
         `);
     } else {
         for (i = 0; i < lenItem; i++) {
-
             const imgHash = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[array[i].name].icon_url
-
             document.getElementById("inventoryGrid").insertAdjacentHTML("afterbegin", `
              <div id="name` + i + `">
                  <img src="` + imgHash + `" alt="" class="itemImg" id="itemImg` + i + `"> 
@@ -251,23 +360,30 @@ function populateInventory() {
      
              </div>
              `);
-
         }
     }
-
-
-
 }
 
+//Sells selected item from inventory
 function sellItem(num) {
-    let tempBal = Number(balance) + inventoryData[num].price
+    let tempBal = parseFloat(balance) + inventoryData[num].price
     let roundBal = (Math.round((tempBal) * 100) / 100).toFixed(2)
     setBal(roundBal)
+    totalSold = parseFloat(totalSold) + parseFloat(inventoryData[num].price)
+    localStorage.setItem("totalSold", totalSold)
+    inventoryValCalc()
     inventoryData.splice(num, 1)
     localStorage.setItem("inventoryData", JSON.stringify(inventoryData))
-    totalSold = totalSold + Number(inventoryData[num].price)
-    localStorage.setItem("totalSold", totalSold)
     populateInventory()
+}
+
+//Calculates value of inventory and stores in localStorage
+function inventoryValCalc(){
+    inventoryValue = 0
+    for(i=0; i<inventoryData.length;i++){
+        inventoryValue = (Math.round((parseFloat(inventoryValue) + parseFloat(inventoryData[i].price)) * 100) / 100).toFixed(2)
+    }
+    localStorage.setItem("inventoryValue", inventoryValue)
 }
 
 //Hides all Case Divs
@@ -324,7 +440,7 @@ function sortItems(inputArr) {
         }
         inputArr[j + 1] = current;
     }
-    return inputArr.slice(0)
+    return inputArr
 
 }
 
@@ -365,7 +481,7 @@ function linearSearch(arr, target) {
 //Binary Searches a sorted array of the case names to determine
 function searchCase() {
     const term = simpTerm()
-    let dupeArray = nameArray
+    let dupeArray = nameArray.slice(0)
     let sortedArray = sortItems(dupeArray)
     const searchResult = binarySearch(sortedArray, term)
 
@@ -394,13 +510,10 @@ function inventory() {
     document.getElementById("inventoryBar").setAttribute("class", "active");
     populateInventory()
     showInventory()
-
-
-
 }
 
 function viewCase(caseString) {
-
+    document.getElementById('caseView').play();
     document.getElementById("openCaseImgDiv").style.display = "Block"
     document.getElementById("wonItemImgDiv").style.display = "none"
     openDiv.style.display = "Block"
@@ -455,94 +568,15 @@ function getRandomItem(arr) {
 function openCase(caseString) {
 
     let caseCost = (Math.round((itemData.cases[caseString]["cost of case"] + 2.50) * 100) / 100).toFixed(2)
-    let ifBal = Number(balance)
-    let ifCost = Number(caseCost)
+    let ifBal = parseFloat(balance)
+    let ifCost = parseFloat(caseCost)
     if ( ifBal > ifCost) {
+        //Hides buttons to open case as animation plays
         document.getElementById("openCaseImgDiv").style.display = "Block"
         document.getElementById("wonItemImgDiv").style.display = "none"
         document.getElementById("openBtnDiv").style.display = "none"
-        //Item Rarity Odds
-        let rarityWeight = [{
-                value: "Special",
-                stat: 1,
-                probability: 0.0002558
-            },
-
-            {
-                value: "Covert",
-                stat: 1,
-                probability: 0.0006394
-            },
-            {
-                value: "Special",
-                stat: 0,
-                probability: 0.0025575
-            },
-            {
-                value: "Classified",
-                stat: 1,
-                probability: 0.0031969
-            },
-            {
-                value: "Covert",
-                stat: 0,
-                probability: 0.0063939
-            },
-            {
-                value: "Restricted",
-                stat: 1,
-                probability: 0.0159847
-            },
-            {
-                value: "Classified",
-                stat: 1,
-                probability: 0.0319693
-            },
-            {
-                value: "Mil-Spec Grade",
-                stat: 1,
-                probability: 0.0799233
-            },
-            {
-                value: "Restricted",
-                stat: 0,
-                probability: 0.1598465
-            },
-            {
-                value: "Mil-Spec Grade",
-                stat: 0,
-                probability: 0.7992327
-            },
-        ]
-
-        //Item Wear odds
-        let wearWeight = [{
-                value: "Factory New",
-                probability: 0.03
-            },
-            {
-                value: "Battle-Scarred",
-                probability: 0.16
-            },
-            {
-                value: "Minimal Wear",
-                probability: 0.23
-            },
-            {
-                value: "Well-Worn",
-                probability: 0.25
-            },
-            {
-                value: "Field-Tested",
-                probability: 0.33
-            }
-
-
-
-        ]
 
         let itemWear = randomizer(wearWeight)
-
         let itemRarity = randomizer(rarityWeight)
 
         let wonItem = {
@@ -630,15 +664,15 @@ function openCase(caseString) {
         //Workaround for cases such as the CS:GO weapon case where items do not exist in all four wear values
         if (imgHashdata.items_list[wonItemFullName] != null) {
             //Logs Won Item name to console
-            console.log(wonItemFullName)
+            console.log(wonItemFullName);
 
             //Adds won Item to inventory array
             let obj = {
                 name: wonItemFullName,
                 price: imgHashdata.items_list[wonItemFullName].price["7_days"].average
-            }
-            inventoryData.push(obj)
-            localStorage.setItem("inventoryData", JSON.stringify(inventoryData))
+            };
+            inventoryData.push(obj);
+            localStorage.setItem("inventoryData", JSON.stringify(inventoryData));
 
             //Pushes Won Item Data to HTML
             document.getElementById("wonItemImg").src = "https://steamcommunity-a.akamaihd.net/economy/image/" + imgHashdata.items_list[wonItemFullName].icon_url
@@ -649,8 +683,9 @@ function openCase(caseString) {
             let caseCost = (Math.round((itemData.cases[caseString]["cost of case"] + 2.50) * 100) / 100).toFixed(2)
             let tempBal = balance - caseCost
             let roundBal = (Math.round(tempBal * 100) / 100).toFixed(2)
+            let roundSpend = (Math.round((parseFloat(totalSpend) + parseFloat(caseCost)) * 100) / 100).toFixed(2)
 
-            totalSpend = totalSpend + Number(caseCost)
+            totalSpend = roundSpend
             localStorage.setItem("totalSpend", totalSpend)
 
             setBal(roundBal)
@@ -669,22 +704,23 @@ function openCase(caseString) {
 }
 
 async function caseAnimation() {
-    document.getElementById("openCaseImg").classList.add("caseOpenAnimation1")
-    await sleep(3001)
-    document.getElementById("openCaseImg").classList.remove("caseOpenAnimation1")
-    document.getElementById("openCaseImg").classList.add("caseOpenAnimation2")
-    await sleep(1001)
-    document.getElementById("openCaseImg").classList.remove("caseOpenAnimation2")
-    document.getElementById("openCaseImgDiv").style.display = "none"
-    document.getElementById("wonItemImgDiv").style.display = "Block"
-    document.getElementById("openBtnDiv").style.display = "Block"
+    document.getElementById('caseOpen').play();
+    document.getElementById("openCaseImg").classList.add("caseOpenAnimation1");
+    await sleep(3001);
+    document.getElementById("openCaseImg").classList.remove("caseOpenAnimation1");
+    document.getElementById("openCaseImg").classList.add("caseOpenAnimation2");
+    await sleep(1001);
+    document.getElementById("openCaseImg").classList.remove("caseOpenAnimation2");
+    document.getElementById("openCaseImgDiv").style.display = "none";
+    document.getElementById("wonItemImgDiv").style.display = "Block";
+    document.getElementById("openBtnDiv").style.display = "Block";
 
 }
 
 function closeCase() {
-    openDiv.style.display = "none"
-    gridDiv.style.display = "Block"
-    searchDiv.style.display = "Block"
+    openDiv.style.display = "none";
+    gridDiv.style.display = "Block";
+    searchDiv.style.display = "Block";
 }
 
 function setBal(bal, a) {

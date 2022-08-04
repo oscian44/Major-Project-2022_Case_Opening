@@ -147,9 +147,25 @@ li a.active {
   
   color: rgb(211, 211, 211);
 }
+
 .grid-container7{
   display: grid;
   grid-template-columns: 5% 15% 60% 15% 5%;
+  background-color: #1F1B24;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(211, 211, 211);
+  text-align: center;
+  justify-content: center;
+}
+
+#resultsTitle {
+  text-decoration: underline;
+}
+
+.grid-container8{
+  display: grid;
+  grid-template-columns: auto;
   background-color: #1F1B24;
   padding: 10px;
   font-family: 'Roboto', sans-serif;

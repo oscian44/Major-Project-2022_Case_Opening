@@ -16,7 +16,7 @@
             <li class="menuTitle"><a onclick="home()" id="home">CS:GO Case Simulator</a></li>
             <div id="menubarSim" class="menubarSim">
                 <li class="menuItem"><a class="" onclick="inventory()" id="inventoryBar">Inventory</a></li>
-                <li class="menuItem"><a class="" onclick="populateCases()" id="endsim">End Simulation</a></li>
+                <li class="menuItem"><a class="" onclick="endSim()" id="endsim">End Simulation</a></li>
                 <li class="menuItem"><a onclick="refreshSite()">Reload Price Data</a></li>
             </div>
 
@@ -73,15 +73,17 @@
         </div>
     </div>
 
+
+
     <div id="mainsite">
 
         <div id="inventory">
             <div class="grid-container7">
-                
+
                 <div id="homeBtn">
                     <button onclick="home()" class="whiteBtn">Return Home</button>
                 </div>
-                
+
             </div>
 
             <div id="inventoryGrid" class="grid-container6">
@@ -90,28 +92,84 @@
 
         </div>
 
+
+        <div id="simulationEnd">
+
+            <div class="grid-container8">
+                <div>
+                    <h1 id="resultsTitle">Results</h1>
+                </div>
+
+                <div>
+                    <h2>Total Spend:</h2>
+                    <h3 id="totalSpend">$</h3>
+                </div>
+
+                <div>
+                    <h2>Total Sold:</h2>
+                    <h3 id="totalSold">$</h3>
+                </div>
+
+                <div>
+                    <h2>Value of Inventory at Simulation End:</h2>
+                    <h3 id="inventoryValue">$</h3>
+                </div>
+
+                <div>
+                    <h2>Remaining Balance:</h2>
+                    <h3 id="balEnd">$</h3>
+                </div>
+
+                <div>
+                    <h2>Profit (Exluding Inventory Value):</h2>
+                    <h3 id="profitNoInven">$</h3>
+                </div>
+
+                <div>
+                    <h2>Profit (Including Inventory Value):</h2>
+                    <h3 id="profitInven">$</h3>
+                </div>
+
+                <div>
+                    <button class="whiteBtn" onclick="resetSim()">Reset Simulation</button>
+                </div>
+
+            </div>
+
+        </div>
+
         <div id="casePage">
             <div class="searchBar" id="searchBarDiv">
-
                 <div class="grid-container5">
+
                     <div></div>
+
                     <div></div>
+
                     <div id="searchBarDiv">
                         <input type="text" id="searchBar" placeholder="Enter Case Name Here">
                     </div>
+
                     <div id="searchBtnDiv">
                         <button id="searchBtn" onclick="searchCase()"><img id="searchBtnImg"
                                 src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/Search.svg"
                                 alt=""></button>
                     </div>
+
                     <div></div>
+
                     <div></div>
+
                     <div></div>
+                    
                     <div id="searchResetBtn">
                         <button class="whiteBtn" onclick="showCases()">Reset</button>
                     </div>
+
                     <div></div>
+
                     <div></div>
+
                 </div>
 
             </div>
@@ -119,13 +177,18 @@
             <div id="gridDiv">
                 <div id="caseGrid" class="grid-container">
                     <div>
+
                         <img src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/loading.gif"
                             alt="" class="caseImg" id="caseImg1">
+
                         <p>
+                            
                             <h1 class="caseName" id="caseName1">Test Case</h1>
                             <br>
                             <h2 class="casePrice">$2.50</h2>
+
                         </p>
+
                     </div>
                 </div>
             </div>
@@ -136,11 +199,14 @@
             <div class="grid-container3">
                 <div>
                     <div class="grid-container4">
+
                         <div id="placeHolder">
                         </div>
+
                         <div class="openName">
                             <h1 id="openName"></h1>
                         </div>
+
                         <div class="exitBtn">
                             <input id="exitButton" onclick="closeCase()" type="image"
                                 src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/exit_icon.svg">
@@ -158,45 +224,33 @@
                                 <h1 id="wonItemName" class="text-jiggle"></h1>
                                 <h1 id="wonItemPrice"></h1>
                             </div>
-                            
+
                             <h1 id="openPrice"></h1>
                             <div id="openBtnDiv">
                                 <button id="openBtn" onclick="" class="whiteBtn">Open Case</button>
                             </div>
-                            
+
                         </div>
-
                     </div>
-
-
-
                 </div>
-
-
-
-
-
-
-
-
-
             </div>
         </div>
-
-
     </div>
 
     <div class="loadingScreen" id="loading">
+
         <img src="https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/img/loading.gif"
             alt="">
+
         <p class="tooltip">Loading Please Wait</p>
+
     </div>
 
-
-
-
     
+    <audio src="mp3/caseOpen.mp3" id="caseOpen"></audio>
+    <audio src="mp3/caseView.mp3" id="caseView"></audio>
     <script src="js/main.js"></script>
+
 </body>
 
 </html>
