@@ -221,11 +221,11 @@ function endSim(){
     searchDiv.style.display = "none"
     loadingDiv.style.display = "none"
 
-    document.getElementById("totalSpend").innerHTML = "$" + totalSpend
-    document.getElementById("totalSold").innerHTML = "$" + totalSold
+    document.getElementById("totalSpend").innerHTML = "$" + (Math.round((parseFloat(totalSpend)) * 100) / 100).toFixed(2)
+    document.getElementById("totalSold").innerHTML = "$" + (Math.round((parseFloat(totalSold)) * 100) / 100).toFixed(2)
     inventoryValCalc()
-    document.getElementById("inventoryValue").innerHTML = "$" + inventoryValue
-    document.getElementById("balEnd").innerHTML = "$" + balance
+    document.getElementById("inventoryValue").innerHTML = "$" + (Math.round((parseFloat(inventoryValue)) * 100) / 100).toFixed(2)
+    document.getElementById("balEnd").innerHTML = "$" + (Math.round((balance) * 100) / 100).toFixed(2)
     let profitNoInven = (Math.round(((parseFloat(totalSold) + parseFloat(balance)) - parseFloat(totalSpend)) * 100) / 100).toFixed(2)
     document.getElementById("profitNoInven").innerHTML = "$" + profitNoInven
     let profitInven = (Math.round(((parseFloat(totalSold) + parseFloat(balance) + parseFloat(inventoryValue)) - parseFloat(totalSpend)) * 100) / 100).toFixed(2)
@@ -262,7 +262,7 @@ function loadImgHash(isSiteActive) {
             simBarDiv.style.display = "none";
             loadingDiv.style.display = "Block";
 
-            fetch('https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project%20Site%20Files/json/csgobackpack.json')
+            fetch('https://raw.githubusercontent.com/oscian44/Major-Project-2022_Case_Opening/main/Project_Site_Files/json/csgobackpack.json')
                 .then(response => response.json())
                 .then(data => {
 
@@ -589,6 +589,7 @@ function openCase(caseString) {
         document.getElementById("openCaseImgDiv").style.display = "Block"
         document.getElementById("wonItemImgDiv").style.display = "none"
         document.getElementById("openBtnDiv").style.display = "none"
+        document.getElementById("exitBtnDiv").style.display = "none";
 
         let itemWear = randomizer(wearWeight)
         let itemRarity = randomizer(rarityWeight)
@@ -726,6 +727,7 @@ async function caseAnimation() {
     document.getElementById("openCaseImgDiv").style.display = "none";
     document.getElementById("wonItemImgDiv").style.display = "Block";
     document.getElementById("openBtnDiv").style.display = "Block";
+    document.getElementById("exitBtnDiv").style.display = "Block";
 
 }
 
