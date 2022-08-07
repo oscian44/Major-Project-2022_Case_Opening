@@ -1,3 +1,4 @@
+//All divs that are regularly modified by the JS code
 var homeDiv = document.getElementById("homesite")
 var mainDiv = document.getElementById("mainsite")
 var simBarDiv = document.getElementById("menubarSim")
@@ -9,6 +10,8 @@ var inventoryDiv = document.getElementById("inventory")
 var searchDiv = document.getElementById("searchBarDiv")
 var casePageDiv = document.getElementById("casePage")
 var endScreenDiv = document.getElementById("simulationEnd")
+
+//Defining variables for data of items that are populated later in project
 var imgHashdata;
 var itemData;
 var dataLoaded;
@@ -118,6 +121,7 @@ if (siteActive == null) {
     localStorage.setItem("balance", balance)
 }
 
+//Ran to reset all variables at end of simulaiton
 function resetSim(){
     siteActive = 0
     inventoryData = []
@@ -138,6 +142,8 @@ function resetSim(){
 }
 
 //Functions which affect the active site DIVs
+
+//Shows Divs for home page
 function showHome() {
     homeDiv.style.display = "Block"
     openDiv.style.display = "none"
@@ -500,18 +506,23 @@ function searchCase() {
 
 }
 
+//Returns user to the main page on the site
 function home() {
+    //sets inventory tab to inactive
     document.getElementById("inventoryBar").setAttribute("class", "");
     initPage()
 
 }
 
+//Runs functions to display inventory
 function inventory() {
+    //sets inventory tab to active
     document.getElementById("inventoryBar").setAttribute("class", "active");
     populateInventory()
     showInventory()
 }
 
+//Displays the case data when a case is clicked on
 function viewCase(caseString) {
     document.getElementById('caseView').play();
     document.getElementById("openCaseImgDiv").style.display = "Block"
@@ -533,6 +544,7 @@ function viewCase(caseString) {
 
 }
 
+//Randomises a item based on the predetermined odds for rarities
 function randomizer(values) {
     let i, pickedValue,
         randomNr = Math.random(),
@@ -554,6 +566,7 @@ function randomizer(values) {
     return returnVal;
 }
 
+//Used when deciding on which item within the determined wear and rarity stats is given to the user
 function getRandomItem(arr) {
 
     // get random index value
@@ -565,6 +578,7 @@ function getRandomItem(arr) {
     return item;
 }
 
+//Takes input of case and generates an item from its contents, playing an animation and sound to the user
 function openCase(caseString) {
 
     let caseCost = (Math.round((itemData.cases[caseString]["cost of case"] + 2.50) * 100) / 100).toFixed(2)
@@ -585,13 +599,6 @@ function openCase(caseString) {
             stat: 0
         }
 
-        console.log(itemRarity)
-        console.log(itemWear)
-
-        console.log(Object.keys(itemData.cases[caseString]["skin values"][0]))
-
-        console.log(Object.keys(itemData.cases[caseString]["skin values"]))
-
         let arrLength = Object.keys(itemData.cases[caseString]["skin values"]).length - 1
 
 
@@ -608,8 +615,10 @@ function openCase(caseString) {
             itemNameArray[i] = tempName[0]
         }
 
+        //Populates item pool for case
         for (i = 0; i < arrLength; i++) {
 
+            
             switch (itemData.cases[caseString]["skin values"][i][itemNameArray[i]].rarity) {
                 case "Special":
                     SpecialArray.push(itemNameArray[i])
@@ -630,7 +639,7 @@ function openCase(caseString) {
             }
         }
 
-
+        //Ensures the given item comes from the correct item pool for the generated rarity
         switch (itemRarity.value) {
             case "Special":
                 wonItem.name = getRandomItem(SpecialArray)
@@ -653,12 +662,14 @@ function openCase(caseString) {
 
         wonItem.wear = itemWear.value
 
+        //Sets stattrack identifier
         if (itemRarity.stat == 1) {
             wonItem.stat = "StatTrak™ "
         } else {
             wonItem.stat = ""
         }
 
+        //Creates full won item name
         let wonItemFullName = wonItem.stat + wonItem.name + " (" + wonItem.wear + ")"
 
         //Workaround for cases such as the CS:GO weapon case where items do not exist in all four wear values
@@ -703,6 +714,7 @@ function openCase(caseString) {
 
 }
 
+//Plays case animation in full, async is used to ensure no code runs until animation is finished
 async function caseAnimation() {
     document.getElementById('caseOpen').play();
     document.getElementById("openCaseImg").classList.add("caseOpenAnimation1");
@@ -717,12 +729,14 @@ async function caseAnimation() {
 
 }
 
+//Closes an open case
 function closeCase() {
     openDiv.style.display = "none";
     gridDiv.style.display = "Block";
     searchDiv.style.display = "Block";
 }
 
+//Updates the balance on screen and in local storage when changes are made
 function setBal(bal, a) {
     if (a == 1) {
         siteActive = 1
